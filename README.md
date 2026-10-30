@@ -25,3 +25,20 @@ Movie theater management system.
    ```bash
    git clone https://github.com/mishalshafee/movie-theatre-management-system.git
    cd movie-theatre-management-system/
+
+
+## Running locally
+
+Requires Node.js LTS and Postgres 17. The steps below run Postgres in a container
+with Docker or Podman. If you already have a Postgres 17 server, skip step 1 and set
+`DATABASE_URL` in `.env` to point at it.
+
+1. Start the database: `docker compose up -d`
+   (Podman users: `podman compose up -d`)
+2. `cd backend && cp .env.example .env`
+   (Windows PowerShell: `copy .env.example .env`)
+3. `npm install`
+4. `npm run migrate`
+5. `npm run dev`
+
+The API runs on http://localhost:4000. Check it at `/api/health`.

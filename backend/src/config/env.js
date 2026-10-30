@@ -8,6 +8,9 @@ const schema = z.object({
   PORT: z.coerce.number().default(4000),
   CORS_ORIGIN: z.string().default("http://localhost:5500"),
   DATABASE_URL: z.string().min(1),
+  JWT_ACCESS_SECRET: z.string().min(32),
+  JWT_ACCESS_TTL: z.string().default("15m"),
+  REFRESH_TTL_DAYS: z.coerce.number().int().positive().default(7),
 });
 
 export const env = schema.parse(process.env);

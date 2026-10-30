@@ -1,3 +1,6 @@
+import { authRouter } from "./modules/auth/auth.routes.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
+
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
@@ -18,3 +21,8 @@ app.get("/api/health", async (req, res) => {
     res.status(503).json({ status: "error", db: "down" });
   }
 });
+
+app.use("/api/auth", authRouter);
+
+app.use(notFound);
+app.use(errorHandler);

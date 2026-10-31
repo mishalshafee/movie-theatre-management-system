@@ -39,6 +39,7 @@ with Docker or Podman. If you already have a Postgres 17 server, skip step 1 and
    (Windows PowerShell: `copy .env.example .env`)
 3. `npm install`
 4. `npm run migrate`
-5. `npm run dev`
+5. `npm run seed`
+6. `npm run dev`
 
 The API runs on http://localhost:4000. Check it at `/api/health`.

@@ -1,5 +1,7 @@
+import { registerUser, loginUser, getUserById } from "./auth.service.js";
+import { AppError } from "../../utils/errors.js";
+
 import { registerSchema, loginSchema } from "./auth.schema.js";
-import { registerUser, loginUser } from "./auth.service.js";
 import { env } from "../../config/env.js";
 
 export const REFRESH_COOKIE = "refresh_token";
@@ -23,4 +25,10 @@ export async function login(req, res) {
   const { user, accessToken, refreshToken } = await loginUser(data);
   res.cookie(REFRESH_COOKIE, refreshToken, refreshCookieOptions);
   res.json({ user, accessToken });
+}
+
+export async function me(req, res) {
+  const user = await getUserById(req.user.id);
+  if (!user) throw new AppError(401, "User no longer exists", "UNAUTHORIZED");
+  res.json({ user });
 }

@@ -54,3 +54,11 @@ export async function loginUser({ email, password }) {
   const { password_hash, ...user } = row;
   return { user, accessToken: signAccessToken(user), refreshToken };
 }
+
+export async function getUserById(id) {
+  const { rows } = await pool.query(
+    "SELECT id, email, full_name, role, created_at FROM users WHERE id = $1",
+    [id],
+  );
+  return rows[0] ?? null;
+}

@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Profile – ShowBook</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="nav">
+
+        <a class="logo" href="home.html">ShowBook</a>
+
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="seats.html">Book seats</a>
+            <a href="payment.html">Payment</a>
+            <a href="profile.html" class="on">Profile</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Main Profile Section -->
+    <main class="wrap profile">
+
+        <!-- User Profile Card -->
+        <aside class="glass center">
+
+            <div class="avatar" id="profile-avatar">?</div>
+
+            <h2 id="profile-name">Loading profile...</h2>
+
+            <p class="sub" id="profile-email">
+                Please wait...
+            </p>
+
+            <button
+                class="btn"
+                type="button"
+                id="logout-btn"
+            >
+                Log out
+            </button>
+
+        </aside>
+
+
+        <!-- Account Information -->
+        <section>
+
+            <div class="glass" style="margin-bottom:24px">
+
+                <h2>Account details</h2>
+
+                <form onsubmit="return false">
+
+                    <div class="row">
+
+                        <div>
+                            <label for="n">Full name</label>
+
+                            <input
+                                id="n"
+                                type="text"
+                                placeholder="Full name"
+                                readonly
+                            >
+                        </div>
+
+                        <div>
+                            <label for="e">Email</label>
+
+                            <input
+                                id="e"
+                                type="email"
+                                placeholder="Email address"
+                                readonly
+                            >
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- Booking History -->
+            <div class="glass">
+
+                <h2>My bookings</h2>
+
+                <p class="sub" id="booking-message">
+                    Booking history is not connected yet.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JavaScript Files -->
+    <script src="api.js"></script>
+    <script src="profile.js"></script>
+
+</body>
+</html>

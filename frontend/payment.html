@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Payment – ShowBook</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="nav">
+
+        <a class="logo" href="home.html">ShowBook</a>
+
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="seats.html">Book seats</a>
+            <a href="payment.html" class="on">Payment</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+
+    </header>
+
+    <!-- Main Payment Section -->
+    <main class="wrap book">
+
+        <!-- Payment Form -->
+        <section class="glass">
+
+            <h1>Payment</h1>
+
+            <p class="sub">
+                Enter your card details to confirm your booking.
+            </p>
+
+            <form id="PayForm">
+
+                <label for="cn">Name on card</label>
+                <input id="cn" required>
+
+                <label for="cc">Card number</label>
+                <input
+                    id="cc"
+                    inputmode="numeric"
+                    maxlength="19"
+                    placeholder="1234 5678 9012 3456"
+                    required
+                >
+
+                <div class="row keep">
+
+                    <div>
+                        <label for="ex">Expiry</label>
+                        <input
+                            id="ex"
+                            placeholder="MM/YY"
+                            maxlength="5"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="cv">CVV</label>
+                        <input
+                            id="cv"
+                            type="password"
+                            inputmode="numeric"
+                            maxlength="4"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button class="btn" type="submit">
+                    Pay now
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- Order Summary -->
+        <aside class="glass sum">
+
+            <h2>Order summary</h2>
+
+            <div>
+                <span id="sum-show">No show selected</span>
+                <span></span>
+            </div>
+
+            <div>
+                <span id="sum-seats">No seats selected</span>
+                <span id="sum-sub">$0.00</span>
+            </div>
+
+            <div>
+                <span>Booking fee</span>
+                <span id="sum-fee">$0.00</span>
+            </div>
+
+            <div class="total">
+                <span>Total</span>
+                <span id="sum-total">$0.00</span>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="payment.js"></script>
+
+</body>
+</html>

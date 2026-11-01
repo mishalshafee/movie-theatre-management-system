@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Seat Booking - ShowBook</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="nav">
+
+        <a class="logo" href="home.html">ShowBook</a>
+
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="seats.html" class="on">Book seats</a>
+            <a href="payment.html">Payment</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="wrap book">
+
+        <!-- Seat Selection Section -->
+        <section class="glass">
+
+            <h1>Choose your seats</h1>
+
+            <p class="sub">
+                Midnight Opera · Sat 7 Nov, 7:30 PM
+            </p>
+
+            <!-- Cinema Screen -->
+            <div class="screen" aria-label="Stage"></div>
+
+            <!-- Seat Layout -->
+            <div class="seats" id="seats"></div>
+
+            <!-- Seat Legend -->
+            <div class="legend">
+
+                <span>
+                    <i></i>
+                    Available
+                </span>
+
+                <span>
+                    <i class="s"></i>
+                    Selected
+                </span>
+
+                <span>
+                    <i class="t"></i>
+                    Taken
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- Booking Summary -->
+        <aside class="glass sum">
+
+            <h2>Your selection</h2>
+
+            <div>
+                <span>Seats</span>
+                <span id="list">None</span>
+            </div>
+
+            <div>
+                <span>Price each</span>
+                <span>$20.00</span>
+            </div>
+
+            <div class="total">
+                <span>Total</span>
+                <span id="total">$0.00</span>
+            </div>
+
+            <a class="btn"
+               id="go"
+               href="payment.html"
+               aria-disabled="true">
+                Continue to payment
+            </a>
+
+        </aside>
+
+    </main>
+
+
+   <script src="api.js"></script>
+<script src="seat.js"></script>
+
+</body>
+</html>
+

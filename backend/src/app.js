@@ -1,6 +1,7 @@
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 import { moviesRouter } from "./modules/movies/movies.routes.js";
+import { screensRouter } from "./modules/screens/screens.routes.js";
 
 import express from "express";
 import helmet from "helmet";
@@ -29,6 +30,7 @@ app.get("/api/health", async (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/movies", moviesRouter);
+app.use("/api/screens", screensRouter);
 
 app.use(notFound);
 app.use(errorHandler);

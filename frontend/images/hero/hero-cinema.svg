@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="0.55" stop-color="#141C2E"/>
+      <stop offset="1" stop-color="#1B2438" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="0.55" stop-color="#141C2E"/>
+      <stop offset="1" stop-color="#1B2438"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.32" r="0.55">
+      <stop offset="0" stop-color="#E63946" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#E63946" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#E63946" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.18" cy="0.7" r="0.5">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0B1220" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#0B1220" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#0B1220" stop-opacity="0.92"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="46" height="46" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="#FFFFFF" fill-opacity="0.06"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky2)"/>
+  <rect width="1600" height="900" fill="url(#dots)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect width="1600" height="900" fill="url(#glow2)"/>
+
+  <!-- abstract skyline / auditorium seats curve -->
+  <g opacity="0.55">
+    <path d="M0 720 C 320 640 520 660 760 700 C 1000 740 1240 720 1600 680 L1600 900 L0 900 Z" fill="#0B1220" opacity="0.85"/>
+    <path d="M0 780 C 300 730 560 750 820 790 C 1080 830 1340 810 1600 770 L1600 900 L0 900 Z" fill="#070C16" opacity="0.9"/>
+  </g>
+
+  <!-- film reel accents -->
+  <g opacity="0.12" stroke="#F8FAFC" stroke-width="2" fill="none">
+    <circle cx="1280" cy="170" r="120"/>
+    <circle cx="1280" cy="170" r="40"/>
+    <circle cx="1280" cy="110" r="14"/>
+    <circle cx="1340" cy="170" r="14"/>
+    <circle cx="1280" cy="230" r="14"/>
+    <circle cx="1220" cy="170" r="14"/>
+  </g>
+
+  <!-- light beams -->
+  <g opacity="0.10">
+    <polygon points="780,0 820,0 1180,900 1040,900" fill="#F8FAFC"/>
+    <polygon points="900,0 925,0 1320,900 1230,900" fill="#E63946"/>
+  </g>
+
+  <rect width="1600" height="900" fill="url(#fade)"/>
+</svg>

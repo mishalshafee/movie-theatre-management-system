@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B1E3B"/>
+      <stop offset="0.5" stop-color="#1E3A8A"/>
+      <stop offset="1" stop-color="#4C1D95"/>
+    </linearGradient>
+    <radialGradient id="sun1" cx="0.74" cy="0.34" r="0.4">
+      <stop offset="0" stop-color="#FBBF24" stop-opacity="0.9"/>
+      <stop offset="0.4" stop-color="#F59E0B" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#g1)"/>
+  <rect width="400" height="600" fill="url(#sun1)"/>
+  <g fill="none" stroke="#F8FAFC" stroke-opacity="0.18" stroke-width="1.2">
+    <circle cx="296" cy="204" r="90"/>
+    <circle cx="296" cy="204" r="150"/>
+    <circle cx="296" cy="204" r="210"/>
+  </g>
+  <g fill="#F8FAFC">
+    <circle cx="120" cy="120" r="1.6" opacity="0.8"/>
+    <circle cx="60" cy="200" r="1.2" opacity="0.6"/>
+    <circle cx="180" cy="80" r="1" opacity="0.5"/>
+    <circle cx="90" cy="300" r="1.4" opacity="0.7"/>
+    <circle cx="40" cy="380" r="1" opacity="0.5"/>
+  </g>
+  <path d="M0 520 L120 470 L220 500 L330 455 L400 475 L400 600 L0 600 Z" fill="#0B1220" opacity="0.85"/>
+  <path d="M0 560 L150 525 L280 545 L400 520 L400 600 L0 600 Z" fill="#05070D" opacity="0.95"/>
+  <text x="32" y="470" font-family="Playfair Display, Georgia, serif" font-size="34" font-weight="700" fill="#F8FAFC" letter-spacing="0.5">STELLAR</text>
+  <text x="32" y="500" font-family="Playfair Display, Georgia, serif" font-size="20" font-weight="500" fill="#FBBF24" letter-spacing="6">HORIZON</text>
+</svg>

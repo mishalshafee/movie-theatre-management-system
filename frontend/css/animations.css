@@ -1,0 +1,248 @@
+/* =================================================================
+   CinePremiere — Animations & keyframes
+   ================================================================= */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+@keyframes floatYslow {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-26px) translateX(10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -480px 0;
+  }
+  100% {
+    background-position: 480px 0;
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ---------- Hero floating orbs ---------- */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-orb.orb-1 {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgba(230, 57, 70, 0.55),
+    rgba(230, 57, 70, 0) 70%
+  );
+  top: 12%;
+  right: 8%;
+  animation: floatY 9s var(--ease) infinite;
+}
+
+.hero-orb.orb-2 {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.45),
+    rgba(99, 102, 241, 0) 70%
+  );
+  bottom: 16%;
+  left: 6%;
+  animation: floatYslow 11s var(--ease) infinite;
+}
+
+.hero-orb.orb-3 {
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.4),
+    rgba(251, 191, 36, 0) 70%
+  );
+  top: 55%;
+  right: 22%;
+  animation: floatY 13s var(--ease) infinite;
+}
+
+/* ---------- Shimmer skeleton ---------- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    #eef2f7 37%,
+    var(--border) 63%
+  );
+  background-size: 480px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* ---------- Cinematic light sweep for hero image ---------- */
+.hero-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.07) 48%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.07) 52%,
+    transparent 70%
+  );
+  background-size: 240% 100%;
+  animation: gradientShift 12s var(--ease) infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Reduced motion override ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb,
+  .hero-sweep,
+  .skeleton {
+    animation: none !important;
+  }
+  .hero-orb {
+    display: none;
+  }
+}
+
+/* =================================================================
+   Vanilla-JS scroll-reveal & entrance animations
+   (replaces Framer Motion's whileInView / stagger for pure JS)
+   ================================================================= */
+
+/* Elements with [data-reveal] start hidden, animate when .is-visible */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children via data-reveal-delay (ms) */
+[data-reveal-delay="1"] {
+  transition-delay: 0.08s;
+}
+[data-reveal-delay="2"] {
+  transition-delay: 0.16s;
+}
+[data-reveal-delay="3"] {
+  transition-delay: 0.24s;
+}
+[data-reveal-delay="4"] {
+  transition-delay: 0.32s;
+}
+[data-reveal-delay="5"] {
+  transition-delay: 0.4s;
+}
+[data-reveal-delay="6"] {
+  transition-delay: 0.48s;
+}
+
+/* Page-load entrance (whole body fades/slides in on navigation) */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.45s var(--ease) both;
+}
+
+/* Auth form field staggered entrance */
+@keyframes fieldEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.field-stagger {
+  opacity: 0;
+  animation: fieldEnter 0.5s var(--ease) forwards;
+}
+
+.field-stagger:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.field-stagger:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.field-stagger:nth-child(3) {
+  animation-delay: 0.26s;
+}
+.field-stagger:nth-child(4) {
+  animation-delay: 0.34s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .page-enter,
+  .field-stagger {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+

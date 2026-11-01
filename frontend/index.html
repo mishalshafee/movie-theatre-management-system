@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CinePremiere — experience cinema like never before. Premium movie ticket booking."
+    />
+    <meta name="theme-color" content="#F8FAFC" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>CinePremiere — Experience Cinema Like Never Before</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/home.css" />
+  </head>
+  <body>
+    <!-- ============ NAVBAR ============ -->
+    <header class="navbar hero-mode">
+      <div class="nav-inner">
+        <a href="index.html" class="brand" aria-label="CinePremiere home">
+          <span class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+          </span>
+          CinePremiere
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="#movies" class="nav-link" data-scroll-to="#movies">Movies</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <!-- guest actions -->
+          <a href="login.html" class="nav-link nav-cta-desktop" data-auth="guest" style="font-weight: 600;">Login</a>
+          <a href="register.html" class="btn btn-primary nav-cta-desktop" data-auth="guest" style="padding: 10px 20px;">Register</a>
+
+          <!-- authenticated actions -->
+          <span class="nav-user" data-auth="authenticated" title="">
+            <span class="nav-avatar" data-user-initial>U</span>
+            <span class="nav-user-name" data-user-name>Account</span>
+          </span>
+          <button class="btn btn-outline nav-cta-desktop" data-auth="authenticated" data-action="logout" style="padding: 9px 18px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </button>
+
+          <!-- hamburger -->
+          <button class="hamburger hamburger-open" aria-label="Open menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- mobile menu -->
+    <div class="mobile-backdrop"></div>
+    <aside class="mobile-menu" aria-hidden="true">
+      <div class="mobile-menu-head">
+        <a href="index.html" class="brand">
+          <span class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+          </span>
+          CinePremiere
+        </a>
+        <button class="hamburger mobile-close" aria-label="Close menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="#movies" class="mobile-link" data-scroll-to="#movies" data-keep-menu="1">Movies</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+
+      <div class="mobile-divider"></div>
+
+      <div class="mobile-actions" data-auth="guest">
+        <a href="login.html" class="btn btn-outline btn-block">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </a>
+        <a href="register.html" class="btn btn-primary btn-block">Create account</a>
+      </div>
+
+      <div class="mobile-actions" data-auth="authenticated" style="display:none;">
+        <div class="mobile-link" style="background: none; cursor: default;">
+          <span class="nav-avatar" style="margin-right: 10px;" data-user-initial>U</span>
+          <span data-user-name>Account</span>
+        </div>
+        <button class="btn btn-outline btn-block" data-action="logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </aside>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-bg">
+        <img src="images/hero/hero-cinema.svg" alt="Cinematic auditorium with light beams" />
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-sweep"></div>
+      <span class="hero-orb orb-1"></span>
+      <span class="hero-orb orb-2"></span>
+      <span class="hero-orb orb-3"></span>
+
+      <div class="hero-content">
+        <div class="hero-inner page-enter">
+          <span class="hero-badge">
+            <span class="dot"></span>
+            Now welcoming movie lovers
+          </span>
+
+          <h1 class="hero-title">
+            Experience Cinema<br />
+            Like <span class="accent">Never Before.</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Premium screens, curated screenings, and effortless booking —
+            all in one beautifully crafted experience built for true movie
+            lovers.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn btn-primary" data-scroll-to="#movies">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+              Explore Movies
+            </button>
+            <a href="login.html" class="btn btn-ghost">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Sign In
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-num">120+</div>
+              <div class="hero-stat-label">Screens nationwide</div>
+            </div>
+            <div>
+              <div class="hero-stat-num">4K</div>
+              <div class="hero-stat-label">Dolby Vision projection</div>
+            </div>
+            <div>
+              <div class="hero-stat-num">1.2M</div>
+              <div class="hero-stat-label">Happy moviegoers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-cue">
+        <span class="mouse"></span>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ============ FEATURED MOVIES ============ -->
+    <section class="section" id="movies">
+      <div class="container">
+        <div class="movies-head">
+          <div class="movies-head-left">
+            <span class="eyebrow" data-reveal>Featured Collection</span>
+            <h2 class="section-title" data-reveal data-reveal-delay="1">Now Showing &amp; Coming Soon</h2>
+            <p class="section-subtitle" data-reveal data-reveal-delay="2" style="margin: 16px 0 0;">
+              A handpicked selection of this season's most anticipated films.
+              Demo posters for showcase purposes.
+            </p>
+          </div>
+
+          <div class="movies-filter" data-reveal data-reveal-delay="1">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="now">Now Showing</button>
+            <button data-filter="soon">Coming Soon</button>
+          </div>
+        </div>
+
+        <div class="movies-grid" id="movies-grid">
+          <!-- movie cards injected by js/home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHY CHOOSE US ============ -->
+    <section class="section features" id="about">
+      <div class="container">
+        <div class="text-center">
+          <span class="eyebrow" data-reveal>Why Choose Us</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Crafted for the love of cinema</h2>
+          <p class="section-subtitle" data-reveal data-reveal-delay="2">
+            Every detail — from the screens to the seats — is designed to make
+            your visit feel like an event.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card" data-reveal data-reveal-delay="1">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3 class="feature-title">Premium 4K Projection</h3>
+            <p class="feature-text">Laser-sharp Dolby Vision on every screen, so every frame lands exactly as the director intended.</p>
+          </div>
+          <div class="feature-card" data-reveal data-reveal-delay="2">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.1 5.9a1 1 0 0 1 .9-.8 1 1 0 0 1 .9.8l1.1 11a3 3 0 0 1-3 3.3 3 3 0 0 1-3-3.3Z"/><path d="M21 12c0 5-3.5 7-5 7"/><path d="M3 12c0 5 3.5 7 5 7"/></svg>
+            </div>
+            <h3 class="feature-title">Effortless Booking</h3>
+            <p class="feature-text">Pick your film, your seat, and your time in seconds. No queues, no friction — just cinema.</p>
+          </div>
+          <div class="feature-card" data-reveal data-reveal-delay="3">
+            <div class="feature-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/></svg>
+            </div>
+            <h3 class="feature-title">Secure &amp; Reliable</h3>
+            <p class="feature-text">Your account is protected with modern authentication and encrypted sessions you can trust.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROMO / CINEMA EXPERIENCE ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="promo" data-reveal>
+          <div class="promo-content">
+            <span class="eyebrow">The CinePremiere Experience</span>
+            <h2 class="promo-title">Step into a world built for stories</h2>
+            <p class="promo-text">
+              Reclining seats, laser-precise projection, and sound that moves
+              with the picture. We obsess over the details so you can lose
+              yourself in the film.
+            </p>
+
+            <ul class="promo-list">
+              <li><span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Reclining leather seats in every auditorium</li>
+              <li><span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Dolby Atmos sound tuned for crystal-clear dialogue</li>
+              <li><span class="check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Late-night showings with curated independent films</li>
+            </ul>
+
+            <a href="register.html" class="btn btn-primary">
+              Join CinePremiere
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+
+          <div class="promo-visual">
+            <div class="seats" id="promo-seats"></div>
+            <div class="screen-glow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta-band">
+      <div class="container">
+        <div class="cta-band-inner">
+          <h2 data-reveal>Ready for your next premiere?</h2>
+          <p data-reveal data-reveal-delay="1">Create a free account to save your favorite films and pick up where you left off.</p>
+          <div data-reveal data-reveal-delay="2" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+            <a href="register.html" class="btn btn-primary">
+              Create account
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="login.html" class="btn btn-outline">Sign in</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer" id="contact">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a href="index.html" class="brand">
+              <span class="brand-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+              </span>
+              CinePremiere
+            </a>
+            <p class="footer-tagline">Experience cinema like never before. Premium screens, curated screenings, and effortless booking for movie lovers everywhere.</p>
+            <div class="footer-social">
+              <a href="#contact" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+              <a href="#contact" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 4 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></a>
+              <a href="#contact" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+              <a href="#contact" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="#movies">Now Showing</a></li>
+              <li><a href="#movies">Coming Soon</a></li>
+              <li><a href="#about">About Us</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+              <li><a href="login.html">Sign In</a></li>
+              <li><a href="register.html">Create Account</a></li>
+              <li><a href="#contact">Help Center</a></li>
+              <li><a href="#contact">FAQ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="mailto:hello@cinepremiere.demo">hello@cinepremiere.demo</a></li>
+              <li><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
+              <li>123 Marquee Street</li>
+              <li>Cityville, CV 00100</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© <span id="year"></span> CinePremiere. All rights reserved.</span>
+          <span>Phase 01 · Home · Login · Register</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // promo seat decoration
+      (function () {
+        var seats = document.getElementById('promo-seats');
+        if (!seats) return;
+        var premium = { '1-2': 1, '1-3': 1, '2-2': 1, '2-3': 1, '2-4': 1, '3-3': 1 };
+        var html = '';
+        for (var r = 0; r < 4; r++) {
+          for (var c = 0; c < 6; c++) {
+            var isPrem = premium[r + '-' + c] ? ' premium' : '';
+            html +=
+              '<span class="seat' + isPrem + '" style="top:' +
+              (38 + r * 16) + '%;left:' + (12 + c * 13) + '%;"></span>';
+          }
+        }
+        seats.innerHTML = html;
+      })();
+    </script>
+    <script type="module" src="js/home.js"></script>
+  </body>
+</html>

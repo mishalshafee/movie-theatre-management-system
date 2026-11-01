@@ -16,7 +16,7 @@ const fields = z.object({
   durationMinutes: z.number().int().min(1).max(600),
   genre: z.string().trim().max(100).nullable(),
   rating: z.string().trim().max(20).nullable(),
-  posterUrl: z.string().url().max(2048).nullable(),
+  posterUrl: z.string().trim().max(2048).nullable(),
   releaseDate: z.string().date().nullable(),
   status: statusEnum,
 });

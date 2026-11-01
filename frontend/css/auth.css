@@ -1,0 +1,467 @@
+/* =================================================================
+   CinePremiere — Auth pages (Login / Register)
+   ================================================================= */
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  background: var(--bg);
+}
+
+/* ---------- Left cinematic panel ---------- */
+.auth-aside {
+  position: relative;
+  overflow: hidden;
+  background: #0b1220;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 48px;
+  color: #fff;
+}
+
+.auth-aside-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.auth-aside-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+  animation: heroZoom 22s var(--ease) infinite alternate;
+}
+
+.auth-aside-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+      160deg,
+      rgba(11, 18, 32, 0.55),
+      rgba(11, 18, 32, 0.82)
+    ),
+    radial-gradient(circle at 80% 20%, rgba(230, 57, 70, 0.28), transparent 55%);
+}
+
+.auth-aside-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.28rem;
+  color: #fff;
+}
+
+.auth-brand .brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.auth-pitch {
+  max-width: 420px;
+}
+
+.auth-pitch .eyebrow {
+  color: #fca5a5;
+}
+
+.auth-pitch h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.12;
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+.auth-pitch p {
+  color: rgba(248, 250, 252, 0.78);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.auth-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.auth-perks li {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 0.93rem;
+  color: rgba(248, 250, 252, 0.88);
+}
+
+.auth-perks .perk-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(230, 57, 70, 0.22);
+  color: #fca5a5;
+  flex-shrink: 0;
+}
+
+.auth-foot-note {
+  font-size: 0.84rem;
+  color: rgba(248, 250, 252, 0.55);
+}
+
+/* floating orbs re-use from animations.css */
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-orb.orb-a {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(
+    circle,
+    rgba(230, 57, 70, 0.5),
+    transparent 70%
+  );
+  top: 18%;
+  right: 12%;
+  animation: floatY 10s var(--ease) infinite;
+}
+
+.auth-orb.orb-b {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.4),
+    transparent 70%
+  );
+  bottom: 14%;
+  left: 10%;
+  animation: floatYslow 12s var(--ease) infinite;
+}
+
+/* ---------- Right form panel ---------- */
+.auth-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 38px;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.auth-back:hover {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+
+.auth-heading {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.auth-subheading {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 34px;
+}
+
+/* ---------- Form fields ---------- */
+.field {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.field-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-control .field-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-secondary);
+  display: flex;
+  transition: color 0.2s;
+  pointer-events: none;
+}
+
+.field-input {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  font-size: 0.97rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.22s var(--ease), box-shadow 0.22s var(--ease),
+    background 0.22s;
+  outline: none;
+}
+
+.field-input::placeholder {
+  color: #94a3b8;
+}
+
+.field-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.field-control:focus-within .field-icon {
+  color: var(--accent);
+}
+
+.field-input.has-error {
+  border-color: var(--error);
+}
+
+.field-input.has-error:focus {
+  box-shadow: 0 0 0 4px var(--error-soft);
+}
+
+.field-toggle {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  color: var(--text-secondary);
+  transition: color 0.2s, background 0.2s;
+}
+
+.field-toggle:hover {
+  color: var(--text);
+  background: var(--bg);
+}
+
+.field-error {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  font-size: 0.82rem;
+  color: var(--error);
+  animation: fieldErrorIn 0.2s var(--ease);
+}
+
+.field-error.show {
+  display: flex;
+}
+
+@keyframes fieldErrorIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.field-hint {
+  margin-top: 7px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* password strength meter */
+.pw-strength {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pw-bars {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+}
+
+.pw-bars span {
+  height: 5px;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+
+.pw-bars span.s1 {
+  background: var(--error);
+}
+.pw-bars span.s2 {
+  background: #f59e0b;
+}
+.pw-bars span.s3 {
+  background: #eab308;
+}
+.pw-bars span.s4 {
+  background: var(--success);
+}
+
+.pw-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 64px;
+  text-align: right;
+}
+
+/* ---------- Form footer ---------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 26px 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 26px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.auth-switch a {
+  color: var(--accent);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.auth-switch a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.form-error-banner {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--error-soft);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  color: var(--error);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.form-error-banner.show {
+  display: flex;
+  animation: bannerIn 0.25s var(--ease);
+}
+
+@keyframes bannerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-error-banner .banner-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ---------- Mobile: single column ---------- */
+@media (max-width: 880px) {
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+  .auth-aside {
+    display: none;
+  }
+  .auth-main {
+    padding: calc(var(--nav-height) + 24px) 24px 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-heading {
+    font-size: 1.7rem;
+  }
+  .auth-main {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-aside-bg img,
+  .auth-orb {
+    animation: none !important;
+  }
+}

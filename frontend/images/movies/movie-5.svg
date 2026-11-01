@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#064E3B"/>
+      <stop offset="0.5" stop-color="#166534"/>
+      <stop offset="1" stop-color="#052E1A"/>
+    </linearGradient>
+    <linearGradient id="mist5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F8FAFC" stop-opacity="0"/>
+      <stop offset="1" stop-color="#F8FAFC" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#g5)"/>
+  <g fill="#052E1A" opacity="0.85">
+    <path d="M0 360 L70 280 L130 340 L200 240 L270 320 L340 260 L400 320 L400 600 L0 600 Z"/>
+  </g>
+  <g fill="#022C22" opacity="0.9">
+    <path d="M0 440 L80 380 L160 430 L240 360 L320 420 L400 380 L400 600 L0 600 Z"/>
+  </g>
+  <rect width="400" height="600" fill="url(#mist5)"/>
+  <g fill="#F8FAFC" opacity="0.9">
+    <circle cx="300" cy="120" r="1.6"/>
+    <circle cx="120" cy="160" r="1.2"/>
+    <circle cx="220" cy="90" r="1"/>
+    <circle cx="70" cy="220" r="1"/>
+  </g>
+  <path d="M120 200 L120 600" stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="1"/>
+  <path d="M280 160 L280 600" stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="32" y="490" font-family="Playfair Display, Georgia, serif" font-size="26" font-weight="700" fill="#F8FAFC" letter-spacing="0.5">THE LAST</text>
+  <text x="32" y="522" font-family="Playfair Display, Georgia, serif" font-size="20" font-weight="500" fill="#86EFAC" letter-spacing="3">CARTOGRAPHER</text>
+</svg>

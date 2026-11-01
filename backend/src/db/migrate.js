@@ -41,4 +41,4 @@ for (const file of files) {
   }
 }
 
-await pool.end();
+if (process.env.NODE_ENV !== "test") await pool.end();

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Log in – ShowBook</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="center">
+
+<form class="glass auth" id="LoginForm" >
+
+<h1>Welcome Back!</h1>
+
+<p class="sub">Log in to manage shows and bookings.</p>
+
+<label for="email">Email</label>
+<input type="email" id="email" autocomplete="email" required>
+
+<label for="password">Password</label>
+<input type="password" id="password" autocomplete="current-password" required>
+
+<label class="check"><input type="checkbox" id="remember"> <span>Remember me</span></label>
+<label class="check"><input type="checkbox" id="terms" required> <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms and Conditions</a></span></label>
+
+<p class="forgot"><a href="forgotpassword.html">Forgot password?</a></p>
+<button class="btn" type="submit">Log In</button>
+<p class="foot">New here? <a href="Registration.html">Create an account</a></p>
+</form>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -10,6 +10,16 @@ import {
 
 const dummyHash = await argon2.hash("dummy-password-for-timing");
 
+function toUser(r) {
+  return {
+    id: r.id,
+    email: r.email,
+    fullName: r.full_name,
+    role: r.role,
+    createdAt: r.created_at,
+  };
+}
+
 export async function registerUser({ email, password, fullName }) {
   const passwordHash = await argon2.hash(password);
   try {
@@ -19,7 +29,7 @@ export async function registerUser({ email, password, fullName }) {
        RETURNING id, email, full_name, role, created_at`,
       [email, passwordHash, fullName],
     );
-    return rows[0];
+    return toUser(rows[0]);
   } catch (err) {
     if (err.code === "23505") {
       throw new AppError(409, "Email already registered", "EMAIL_TAKEN");
@@ -30,7 +40,7 @@ export async function registerUser({ email, password, fullName }) {
 
 export async function loginUser({ email, password }) {
   const { rows } = await pool.query(
-    `SELECT id, email, full_name, role, password_hash
+    `SELECT id, email, full_name, role, created_at, password_hash
      FROM users WHERE lower(email) = $1`,
     [email],
   );
@@ -51,7 +61,7 @@ export async function loginUser({ email, password }) {
     [row.id, hashToken(refreshToken), env.REFRESH_TTL_DAYS],
   );
 
-  const { password_hash, ...user } = row;
+  const user = toUser(row);
   return { user, accessToken: signAccessToken(user), refreshToken };
 }
 
@@ -60,7 +70,7 @@ export async function getUserById(id) {
     "SELECT id, email, full_name, role, created_at FROM users WHERE id = $1",
     [id],
   );
-  return rows[0] ?? null;
+  return rows[0] ? toUser(rows[0]) : null;
 }
 
 export async function refreshSession(token) {
@@ -72,7 +82,8 @@ export async function refreshSession(token) {
     await client.query("BEGIN");
 
     const { rows } = await client.query(
-      `SELECT rt.id, rt.family_id, rt.user_id, rt.expires_at, rt.revoked_at, u.role
+      `SELECT rt.id, rt.family_id, rt.user_id, rt.expires_at, rt.revoked_at,
+              u.email, u.full_name, u.role, u.created_at
        FROM refresh_tokens rt
        JOIN users u ON u.id = rt.user_id
        WHERE rt.token_hash = $1
@@ -84,7 +95,6 @@ export async function refreshSession(token) {
     if (!row) {
       failure = new AppError(401, "Invalid refresh token", "UNAUTHORIZED");
     } else if (row.revoked_at) {
-      // A rotated or logged-out token came back: assume theft, kill the session.
       await client.query(
         `UPDATE refresh_tokens SET revoked_at = now()
          WHERE family_id = $1 AND revoked_at IS NULL`,
@@ -108,7 +118,13 @@ export async function refreshSession(token) {
          VALUES ($1, $2, $3, now() + make_interval(days => $4))`,
         [row.user_id, row.family_id, hashToken(newToken), env.REFRESH_TTL_DAYS],
       );
-      const user = { id: row.user_id, role: row.role };
+      const user = toUser({
+        id: row.user_id,
+        email: row.email,
+        full_name: row.full_name,
+        role: row.role,
+        created_at: row.created_at,
+      });
       result = {
         user,
         accessToken: signAccessToken(user),
@@ -116,7 +132,6 @@ export async function refreshSession(token) {
       };
     }
 
-    // Commit even on failure so the family revocation above persists.
     await client.query("COMMIT");
   } catch (err) {
     await client.query("ROLLBACK");

@@ -3,6 +3,7 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 import { moviesRouter } from "./modules/movies/movies.routes.js";
 import { screensRouter } from "./modules/screens/screens.routes.js";
 import { showtimesRouter } from "./modules/showtimes/showtimes.routes.js";
+import { bookingsRouter } from "./modules/bookings/bookings.routes.js";
 
 import express from "express";
 import helmet from "helmet";
@@ -33,6 +34,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/movies", moviesRouter);
 app.use("/api/screens", screensRouter);
 app.use("/api/showtimes", showtimesRouter);
+app.use("/api/bookings", bookingsRouter);
 
 app.use(notFound);
 app.use(errorHandler);

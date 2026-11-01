@@ -10,6 +10,7 @@ import {
   createShowtime,
   updateShowtime,
   deleteShowtime,
+  getSeatMap,
 } from "./showtimes.service.js";
 
 export async function list(req, res) {
@@ -37,4 +38,9 @@ export async function remove(req, res) {
   const { id } = idParamSchema.parse(req.params);
   await deleteShowtime(id);
   res.status(204).end();
+}
+
+export async function seats(req, res) {
+  const { id } = idParamSchema.parse(req.params);
+  res.json(await getSeatMap(id));
 }

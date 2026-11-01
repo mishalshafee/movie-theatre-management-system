@@ -134,8 +134,58 @@ export async function updateShowtime(id, { priceStandard, pricePremium }) {
 }
 
 export async function deleteShowtime(id) {
-  const { rowCount } = await pool.query("DELETE FROM showtimes WHERE id = $1", [
-    id,
-  ]);
-  if (!rowCount) throw notFound();
+  try {
+    const { rowCount } = await pool.query(
+      "DELETE FROM showtimes WHERE id = $1",
+      [id],
+    );
+    if (!rowCount) throw notFound();
+  } catch (err) {
+    if (err.code === "23503") {
+      throw new AppError(
+        409,
+        "Showtime has bookings and cannot be deleted",
+        "IN_USE",
+      );
+    }
+    throw err;
+  }
+}
+
+export async function getSeatMap(id) {
+  const showtime = await getShowtime(id);
+
+  const { rows } = await pool.query(
+    `SELECT st.id, st.row_label, st.seat_number, st.seat_type,
+            CASE WHEN b.id IS NULL THEN 'available'
+                 WHEN b.status = 'held' AND b.expires_at <= now() THEN 'available'
+                 WHEN b.status = 'held' THEN 'held'
+                 ELSE 'sold' END AS status
+     FROM seats st
+     LEFT JOIN booking_seats bs ON bs.seat_id = st.id AND bs.showtime_id = $1 AND bs.active
+     LEFT JOIN bookings b ON b.id = bs.booking_id
+     WHERE st.screen_id = $2
+     ORDER BY st.row_label, st.seat_number`,
+    [id, showtime.screen.id],
+  );
+
+  const byRow = new Map();
+  for (const s of rows) {
+    if (!byRow.has(s.row_label)) byRow.set(s.row_label, []);
+    byRow.get(s.row_label).push({
+      id: s.id,
+      number: s.seat_number,
+      type: s.seat_type,
+      price:
+        s.seat_type === "premium"
+          ? showtime.pricePremium
+          : showtime.priceStandard,
+      status: s.status,
+    });
+  }
+
+  return {
+    showtime,
+    rows: [...byRow].map(([label, seats]) => ({ label, seats })),
+  };
 }

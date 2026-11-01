@@ -14,7 +14,7 @@ export async function migrate() {
 
 export async function resetDb() {
   await pool.query(
-    "TRUNCATE users, refresh_tokens, movies, screens, seats, showtimes RESTART IDENTITY CASCADE",
+    "TRUNCATE users, refresh_tokens, movies, screens, seats, showtimes, bookings, booking_seats RESTART IDENTITY CASCADE",
   );
 }
 

@@ -6,12 +6,14 @@ import {
   create,
   update,
   remove,
+  seats,
 } from "./showtimes.controller.js";
 
 export const showtimesRouter = Router();
 
 showtimesRouter.get("/", list);
 showtimesRouter.get("/:id", getOne);
+showtimesRouter.get("/:id/seats", seats);
 
 showtimesRouter.post("/", requireAuth, requireRole("admin"), create);
 showtimesRouter.patch("/:id", requireAuth, requireRole("admin"), update);

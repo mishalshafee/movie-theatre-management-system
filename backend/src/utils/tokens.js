@@ -17,3 +17,11 @@ export function generateRefreshToken() {
 export function hashToken(token) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
+
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+export function generateBookingCode() {
+  return Array.from(crypto.randomBytes(8), (b) => CODE_ALPHABET[b % 32]).join(
+    "",
+  );
+}

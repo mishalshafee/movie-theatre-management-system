@@ -115,8 +115,19 @@ export async function renameScreen(id, { name }) {
 }
 
 export async function deleteScreen(id) {
-  const { rowCount } = await pool.query("DELETE FROM screens WHERE id = $1", [
-    id,
-  ]);
-  if (!rowCount) throw notFound();
+  try {
+    const { rowCount } = await pool.query("DELETE FROM screens WHERE id = $1", [
+      id,
+    ]);
+    if (!rowCount) throw notFound();
+  } catch (err) {
+    if (err.code === "23503") {
+      throw new AppError(
+        409,
+        "Screen has showtimes and cannot be deleted",
+        "IN_USE",
+      );
+    }
+    throw err;
+  }
 }

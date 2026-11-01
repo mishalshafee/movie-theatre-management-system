@@ -103,8 +103,19 @@ export async function updateMovie(id, data) {
 }
 
 export async function deleteMovie(id) {
-  const { rowCount } = await pool.query("DELETE FROM movies WHERE id = $1", [
-    id,
-  ]);
-  if (!rowCount) throw notFound();
+  try {
+    const { rowCount } = await pool.query("DELETE FROM movies WHERE id = $1", [
+      id,
+    ]);
+    if (!rowCount) throw notFound();
+  } catch (err) {
+    if (err.code === "23503") {
+      throw new AppError(
+        409,
+        "Movie has showtimes. Archive it instead.",
+        "IN_USE",
+      );
+    }
+    throw err;
+  }
 }

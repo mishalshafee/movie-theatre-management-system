@@ -1,248 +1,132 @@
-/* =================================================================
-   CinePremiere — Animations & keyframes
-   ================================================================= */
+/* ==========================================================================
+   Animation system: keyframes, entrance transitions, scroll reveals,
+   hover effects, seat + countdown animations, reduced-motion support.
+   ========================================================================== */
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+/* ---- Keyframes ---------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes floatY {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-18px);
-  }
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
-@keyframes floatYslow {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-  50% {
-    transform: translateY(-26px) translateX(10px);
-  }
+@keyframes nav-underline {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
-
-@keyframes pulseGlow {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.06);
-  }
+@keyframes drawer-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(30px) scale(0.97); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(24px) scale(0.97); }
+}
 @keyframes shimmer {
-  0% {
-    background-position: -480px 0;
-  }
-  100% {
-    background-position: 480px 0;
-  }
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes input-focus {
+  0% { box-shadow: 0 0 0 0 rgba(230,57,70,0.0); }
+  100% { box-shadow: 0 0 0 3px rgba(230,57,70,0.28); }
+}
+@keyframes total-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+@keyframes pulse-urgent {
+  0%, 100% { color: var(--error); }
+  50% { color: #7F1D1D; }
+}
+@keyframes seat-select {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+@keyframes screen-sweep {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(220%); }
+}
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+/* ---- Page entrance -------------------------------------------------------- */
+main#main > .container,
+main#main > .page-head,
+.page .container > .page-head {
+  animation: page-enter var(--t-slow) var(--ease-out);
 }
 
-/* ---------- Hero floating orbs ---------- */
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(8px);
-  pointer-events: none;
-  will-change: transform;
-}
-
-.hero-orb.orb-1 {
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(
-    circle,
-    rgba(230, 57, 70, 0.55),
-    rgba(230, 57, 70, 0) 70%
-  );
-  top: 12%;
-  right: 8%;
-  animation: floatY 9s var(--ease) infinite;
-}
-
-.hero-orb.orb-2 {
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(
-    circle,
-    rgba(99, 102, 241, 0.45),
-    rgba(99, 102, 241, 0) 70%
-  );
-  bottom: 16%;
-  left: 6%;
-  animation: floatYslow 11s var(--ease) infinite;
-}
-
-.hero-orb.orb-3 {
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(
-    circle,
-    rgba(251, 191, 36, 0.4),
-    rgba(251, 191, 36, 0) 70%
-  );
-  top: 55%;
-  right: 22%;
-  animation: floatY 13s var(--ease) infinite;
-}
-
-/* ---------- Shimmer skeleton ---------- */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--border) 25%,
-    #eef2f7 37%,
-    var(--border) 63%
-  );
-  background-size: 480px 100%;
-  animation: shimmer 1.4s infinite linear;
-}
-
-/* ---------- Cinematic light sweep for hero image ---------- */
-.hero-sweep {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.07) 48%,
-    rgba(255, 255, 255, 0.14) 50%,
-    rgba(255, 255, 255, 0.07) 52%,
-    transparent 70%
-  );
-  background-size: 240% 100%;
-  animation: gradientShift 12s var(--ease) infinite;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-/* ---------- Reduced motion override ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .hero-orb,
-  .hero-sweep,
-  .skeleton {
-    animation: none !important;
-  }
-  .hero-orb {
-    display: none;
-  }
-}
-
-/* =================================================================
-   Vanilla-JS scroll-reveal & entrance animations
-   (replaces Framer Motion's whileInView / stagger for pure JS)
-   ================================================================= */
-
-/* Elements with [data-reveal] start hidden, animate when .is-visible */
+/* ---- Scroll reveal ([data-reveal]) ---------------------------------------- */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transform: translateY(22px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
   will-change: opacity, transform;
 }
-
-[data-reveal].is-visible {
+[data-reveal].revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Stagger children via data-reveal-delay (ms) */
-[data-reveal-delay="1"] {
-  transition-delay: 0.08s;
+/* ---- Movie card interactions ---------------------------------------------- */
+.movie-card {
+  transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
 }
-[data-reveal-delay="2"] {
-  transition-delay: 0.16s;
-}
-[data-reveal-delay="3"] {
-  transition-delay: 0.24s;
-}
-[data-reveal-delay="4"] {
-  transition-delay: 0.32s;
-}
-[data-reveal-delay="5"] {
-  transition-delay: 0.4s;
-}
-[data-reveal-delay="6"] {
-  transition-delay: 0.48s;
+.movie-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Page-load entrance (whole body fades/slides in on navigation) */
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---- Seat selection --------------------------------------------------------- */
+.seat { transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease); }
+.seat:not(:disabled):hover { transform: scale(1.12); }
+.seat--selected { animation: seat-select 0.28s var(--ease-out); }
+
+.total-pop { animation: total-pop 0.32s var(--ease-out); }
+
+.hold-timer__count.is-urgent { animation: pulse-urgent 1s ease infinite; }
+
+.cinema-screen__curve::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: screen-sweep 3.4s ease-in-out infinite;
 }
 
-.page-enter {
-  animation: pageEnter 0.45s var(--ease) both;
-}
+/* ---- Poster hover zoom (handled by card hover + inner scale) ----------------- */
+.movie-card__poster img { transition: transform 0.5s var(--ease-out); }
+.movie-card:hover .movie-card__poster img { transform: scale(1.06); }
 
-/* Auth form field staggered entrance */
-@keyframes fieldEnter {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* ---- Admin dashboard cards ---------------------------------------------------- */
+.stat-card { animation: fade-up 0.5s var(--ease-out) backwards; }
 
-.field-stagger {
-  opacity: 0;
-  animation: fieldEnter 0.5s var(--ease) forwards;
-}
-
-.field-stagger:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.field-stagger:nth-child(2) {
-  animation-delay: 0.18s;
-}
-.field-stagger:nth-child(3) {
-  animation-delay: 0.26s;
-}
-.field-stagger:nth-child(4) {
-  animation-delay: 0.34s;
-}
-
+/* ---- Reduced motion ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  .page-enter,
-  .field-stagger {
-    animation: none !important;
-    opacity: 1 !important;
-  }
+  [data-reveal] { opacity: 1; transform: none; }
+  .cinema-screen__curve::after { animation: none; }
 }
-

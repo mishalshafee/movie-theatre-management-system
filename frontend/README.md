@@ -1,173 +1,132 @@
-# CinePremiere — Frontend (Phase 01) · Pure HTML / CSS / JavaScript
+# CineLux — Frontend
 
-The **exact same** premium cinema frontend (Home, Login, Register), rebuilt with
-**vanilla HTML, CSS, and JavaScript** — no React, no Vite, no build step,
-no npm install required to run.
+A complete, premium cinema ticket booking frontend built with **pure HTML5, CSS3 and Vanilla JavaScript (ES modules)**. No frameworks, no build step, no dependencies.
 
-Everything that was done with libraries in the React version is done natively
-here:
-
-| Concern (React version)        | Pure-JS version                        |
-| ------------------------------ | -------------------------------------- |
-| React + Vite                   | Plain `.html` / `.css` / `.js` files   |
-| React Router                   | Multi-page (separate HTML files)       |
-| Axios                          | Native `fetch`                         |
-| React Context                  | Tiny pub/sub module (`js/auth.js`)     |
-| Framer Motion                  | CSS keyframes + `IntersectionObserver` |
-| Lucide React                   | Inline SVG icons                       |
-| Build step                     | **None** — serve the folder as-is      |
+It talks to the existing Node.js + Express + PostgreSQL backend over REST and renders **only real database data** — never fabricated records.
 
 ---
 
-## Pages
+## Quick start
 
-- **Home** — `index.html` (route `/`)
-- **Login** — `login.html` (route `/login`)
-- **Register** — `register.html` (route `/register`)
+1. **Start the backend** (from the backend project):
 
-The Home page uses **fictional demonstration movies** (`data/movies.js`).
-Login & Register are wired to the **real backend**.
+   ```bash
+   npm install
+   cp .env.example .env          # then edit values (never commit .env)
+   npm run migrate               # apply the 7 SQL migrations
+   SEED_ADMIN_EMAIL=admin@example.com SEED_ADMIN_PASSWORD='admin-password-123' npm run seed
+   npm run dev                   # API on http://localhost:4000
+   ```
 
----
+   The seed password must be at least 12 characters (backend rule).
 
-## File structure
+2. **Serve this frontend** on port **5500** (the backend's default CORS origin):
 
-```
-frontend-static/
-├── index.html              # Home page
-├── login.html              # Login page
-├── register.html           # Register page
-├── css/
-│   ├── global.css          # Tokens, reset, navbar, footer, toast, buttons
-│   ├── animations.css      # Keyframes + scroll-reveal + page entrance
-│   ├── home.css            # Home page styles
-│   └── auth.css            # Login/Register styles
-├── js/
-│   ├── config.js           # API base URL (single place to change)
-│   ├── api.js              # fetch client + silent refresh logic
-│   ├── auth.js             # global auth state (pub/sub) + actions
-│   ├── toast.js            # toast notifications
-│   ├── validation.js       # form validators + error extraction
-│   ├── navbar.js           # navbar behaviour (scroll, mobile menu, auth)
-│   ├── reveal.js           # IntersectionObserver scroll animations
-│   ├── home.js             # home page logic (render movies, filter)
-│   ├── login.js            # login page logic
-│   └── register.js         # register page logic
-├── data/
-│   └── movies.js           # 6 fictional demo movies (home only)
-└── images/
-    ├── favicon.svg
-    ├── hero/hero-cinema.svg
-    └── movies/movie-1..6.svg
-```
+   ```bash
+   cd frontend
+   python3 -m http.server 5500
+   # or: VS Code Live Server (set port 5500), npx serve -l 5500, nginx, …
+   ```
 
----
+3. Open **http://localhost:5500**
 
-## Setup
+> The frontend must be served over HTTP (`http://localhost:5500`).
+> Opening `index.html` via `file://` will not work — ES modules require HTTP.
 
-### 1. Configure the backend URL
+### Configuration
 
-Open `js/config.js` and set the base URL to your existing backend:
+Everything lives in **`js/config.js`**:
 
 ```js
-export const API_BASE_URL = 'http://localhost:4000';
+export const API_BASE_URL = "http://localhost:4000";
 ```
 
-> The backend must be running and reachable. Ensure the backend's
-> `CORS_ORIGIN` includes the origin you serve this folder from (e.g.
-> `http://localhost:8000`) **and** that it sends credentials-enabled CORS
-> (`Access-Control-Allow-Credentials: true`) so the HTTP-only refresh cookie
-> works cross-origin.
+If your backend runs on another port, change it there only. Never hardcode API URLs in page scripts.
 
-### 2. Serve the folder over HTTP
+If you must serve the frontend on a different origin/port, update `CORS_ORIGIN`
+in the backend `.env` accordingly (e.g. `CORS_ORIGIN=http://localhost:3000`) and restart the backend —
+otherwise the browser will block the cross-origin requests.
 
-ES modules (`import`/`export`) require an HTTP server — opening
-`index.html` directly via `file://` will **not** work. Use any static server:
+---
 
-**Option A — Python (already installed almost everywhere):**
-```bash
-cd frontend-static
-python3 -m http.server 8000
+## Features
+
+### Customer
+- **Homepage** — featured hero (real Now Showing movie + poster), Now Showing / Coming Soon grids, experience band, promo CTA
+- **Movies** — status filter tabs, title search, pagination, skeletons, empty states
+- **Movie details** — full info + upcoming showtimes grouped by date (time, screen, standard/premium prices)
+- **Seat selection** — live seat map from `GET /api/showtimes/:id/seats`, premium/standard/accessible styling, held/sold states, max 8 seats, animated total
+- **Checkout** — backend-validated selection, 10-minute hold (countdown from the backend's `expiresAt`), demo payment (no card data), resume of an existing unexpired hold
+- **Digital ticket** — status badge, booking code, print-friendly layout, cancellation
+- **My bookings** — paginated history with posters and status chips
+- **Account** — profile from `GET /api/auth/me`, logout
+
+### Admin (role: admin)
+- Dashboard with statistics computed **only** from real endpoints (movies by status, screens, upcoming showtimes). No revenue/customer/sales fabrications — those APIs do not exist.
+- Movies: create / edit / delete, poster URL live preview, IN_USE → "archive instead" guidance
+- Screens: create with A–Z row picker, seats-per-row, premium rows, live seat-layout preview; rename; layout viewer; delete with IN_USE handling
+- Showtimes: filters (movie, screen, date range), create (timezone-aware ISO `startsAt`; backend computes end time), price-only edit, delete, SHOWTIME_OVERLAP handling
+
+### Staff (role: staff)
+- Booking lookup by exact booking ID via `GET /api/bookings/:id` (backend authorizes). No invented list/search APIs.
+
+### Authentication
+- Register (full name, email, password — `confirmPassword` never sent), login with show/hide password
+- Access token **in memory only**; rotating refresh token in an HTTP-only cookie (path `/api/auth`)
+- Every page load restores the session via `POST /api/auth/refresh`
+- `TOKEN_EXPIRED` → automatic single-flight refresh → retry original request once
+- `REFRESH_REUSED` / `UNAUTHORIZED` → clean return to guest state
+- Logout via `POST /api/auth/logout`
+
+---
+
+## Project structure
+
+```
+frontend/
+├── index.html · login.html · register.html · movies.html · movie-details.html
+├── seat-selection.html · checkout.html · booking-details.html · my-bookings.html · account.html
+├── admin/    dashboard.html · movies.html · screens.html · showtimes.html
+├── staff/    booking-lookup.html
+├── css/      variables · main · components · animations · auth · movies · booking · admin · responsive
+├── js/
+│   ├── config.js                  # API_BASE_URL + app constants
+│   ├── core/                      # api.js (fetch client), auth.js, session.js, guards.js, router-helpers.js
+│   ├── services/                  # auth / movies / screens / showtimes / bookings service modules
+│   ├── components/                # navbar, footer, modal, toast, loader, pagination, reveal, icons, movie-card, admin-shell
+│   ├── utils/                     # validators, formatters, date-time, dom
+│   ├── pages/                     # one module per page
+│   ├── admin/                     # dashboard, movies, screens, showtimes
+│   └── staff/                     # booking-lookup
+└── assets/   logo.svg, favicon, fallback art
 ```
 
-**Option B — Node (no install):**
-```bash
-cd frontend-static
-npx serve -p 8000
-```
+## Error handling contract
 
-Then open **http://localhost:8000**.
+All backend errors arrive as `{ error: { code, message, details? } }`. `js/core/api.js`
+normalises them into `{ status, code, message, friendly, details }` and pages map codes to UI:
 
----
+| Code | UI behaviour |
+| --- | --- |
+| `VALIDATION_ERROR` | field-level messages on the form |
+| `TOKEN_EXPIRED` | silent refresh + retry once |
+| `UNAUTHORIZED` / `REFRESH_REUSED` | guest state, redirect to login for protected pages |
+| `INVALID_CREDENTIALS` | inline form alert |
+| `EMAIL_TAKEN` / `SCREEN_NAME_TAKEN` | error on the field itself |
+| `SEAT_UNAVAILABLE` | seat map refetched, customer asked to reselect |
+| `HOLD_EXPIRED` | expired panel + back to seat selection |
+| `SHOWTIME_STARTED` | friendly closed-for-booking message |
+| `SHOWTIME_OVERLAP` | inline alert in showtime form |
+| `IN_USE` | "cannot delete" guidance (e.g. archive the movie) |
+| `BOOKING_NOT_PAYABLE` / `BOOKING_NOT_CANCELLABLE` | status refetch + explanation |
+| `NOT_FOUND` | friendly empty/error state |
+| `NETWORK` / `TIMEOUT` / `INTERNAL` | toast + retry where sensible |
 
-## Backend API contract used
+## Notes & limitations
 
-| Endpoint             | Method | Body                            | Response                                              |
-| -------------------- | ------ | ------------------------------- | ----------------------------------------------------- |
-| `/api/auth/register` | POST   | `{ fullName, email, password }` | `{ user: { id, email, fullName, role, createdAt } }` |
-| `/api/auth/login`    | POST   | `{ email, password }`           | `{ user, accessToken }`                               |
-| `/api/auth/refresh`  | POST   | _(cookie only)_                 | `{ accessToken }`                                     |
-| `/api/auth/me`       | GET    | _(Bearer token)_                | `{ user }`                                            |
-| `/api/auth/logout`   | POST   | _(cookie only)_                 | `204` / empty                                         |
-
-### Validation rules (enforced on the frontend)
-
-- **Full name** — 1–100 characters.
-- **Email** — valid email format.
-- **Password** — 8–128 characters.
-- **Confirm password** — frontend-only equality check (never sent).
-- **Role** — never sent; backend assigns `customer` automatically.
-
----
-
-## Authentication design
-
-- **Access token** kept **in memory only** (module variable in `js/api.js`).
-  Never written to `localStorage` / `sessionStorage`.
-- **Refresh token** lives in an **HTTP-only cookie** managed by the backend.
-  `fetch` uses `credentials: 'include'` so the cookie travels automatically.
-- **Silent refresh**: on any `401`, `api.js` calls `/api/auth/refresh`
-  **once**, replays the original request, and guards against:
-  - concurrent refresh requests (single shared promise),
-  - infinite loops (the refresh endpoint itself is excluded),
-  - the login/register endpoints (so invalid credentials surface normally).
-- **Session restore on startup**: `js/auth.js` calls `/api/auth/refresh` once
-  on load. If it returns `401` (no valid cookie), the user stays a **guest
-  silently** — no error toast.
-- **Logout**: calls `/api/auth/logout` (clears the cookie) and drops the
-  in-memory token, returning to a guest state. The navbar updates instantly
-  via the pub/sub.
-
----
-
-## Animations & accessibility
-
-- Page-load fade/slide entrance, scroll-reveal (`IntersectionObserver` +
-  `[data-reveal]`), staggered form fields, button hover lifts, card hover
-  lifts, image zoom, floating hero orbs, light sweep, toast slide-in,
-  password toggle.
-- All motion **respects `prefers-reduced-motion`**.
-- Fully responsive down to mobile, with an animated hamburger menu and a
-  single-column auth layout on small screens.
-
----
-
-## What is intentionally NOT here (later phases)
-
-- Movie detail pages, seat selection, booking, payments.
-- Admin dashboard.
-- Any fake/mock authentication — every login/register call hits the real
-  backend.
-
----
-
-## Troubleshooting
-
-- **"Unable to reach the server…"** — backend isn't running on the URL in
-  `js/config.js`, or CORS is blocking the request. Confirm the backend is up
-  and that `CORS_ORIGIN` includes your static-server origin.
-- **Blank page / module errors in console** — you opened the file via
-  `file://`. Serve the folder over HTTP (see Setup step 2).
-- **Refresh doesn't restore the session** — the refresh cookie isn't being
-  sent. Ensure the backend sets the cookie with `SameSite=Lax` (or `None` +
-  `Secure` over HTTPS) and that CORS allows credentials.
+- The backend payment endpoint is a **mock** (`POST /api/bookings/:id/pay`). No card details are ever collected, and success is only shown after the backend confirms `status === "confirmed"`.
+- Amounts have no currency in the API; the UI renders them as USD (change `CURRENCY` in `js/config.js` if needed).
+- Movie "search" is client-side over one full page of results (the API caps `limit` at 50 and has no `?search=` parameter).
+- The showtime API only ever returns **upcoming** screenings; admins cannot list past showtimes.
+- Screens cannot be edited beyond renaming (backend `PATCH` accepts `{ name }` only) — the UI reflects that.
+- See `../docs/API-COMPATIBILITY-REPORT.md` for endpoint-by-endpoint verification, including a backend quirk where `DELETE …/` returns `500` instead of the documented `409 IN_USE`.

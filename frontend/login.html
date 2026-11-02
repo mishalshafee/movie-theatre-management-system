@@ -1,143 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Sign in to your CinePremiere account." />
-    <meta name="theme-color" content="#F8FAFC" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <title>Sign In — CinePremiere</title>
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/animations.css" />
-    <link rel="stylesheet" href="css/auth.css" />
-  </head>
-  <body>
-    <div class="auth-page">
-      <!-- ============ LEFT CINEMATIC PANEL ============ -->
-      <aside class="auth-aside">
-        <div class="auth-aside-bg">
-          <img src="images/hero/hero-cinema.svg" alt="Cinematic auditorium backdrop" />
-        </div>
-        <div class="auth-aside-overlay"></div>
-        <span class="auth-orb orb-a"></span>
-        <span class="auth-orb orb-b"></span>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in · CineLux</title>
+  <meta name="description" content="Sign in to your CineLux account to book tickets and manage your bookings.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-hero" aria-hidden="true">
+      <div class="auth-hero__content">
+        <a class="brand brand--light" href="index.html">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="11" fill="#fff" fill-opacity=".14"/><path d="M16.2 12.9c0-1.6 1.75-2.6 3.13-1.77l9.3 5.6c1.32.8 1.32 2.73 0 3.53l-9.3 5.6c-1.38.83-3.13-.17-3.13-1.77V12.9z" fill="#fff"/></svg>
+          <span class="brand__name">Cine<strong>Lux</strong></span>
+        </a>
+        <h2 class="auth-hero__title">The best seats in the house are waiting.</h2>
+        <p class="auth-hero__text">Sign in to hold your favourite seats for 10 minutes while you decide — no queues, no stress.</p>
+        <ul class="auth-hero__points">
+          <li>Real-time seat availability</li>
+          <li>10-minute seat holds</li>
+          <li>Digital tickets with your booking code</li>
+        </ul>
+      </div>
+    </section>
 
-        <div class="auth-aside-content page-enter">
-          <a href="index.html" class="auth-brand">
-            <span class="brand-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
-            </span>
-            CinePremiere
-          </a>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <header class="auth-card__head">
+          <h1 class="auth-card__title">Welcome back</h1>
+          <p class="auth-card__subtitle">Sign in to your CineLux account</p>
+        </header>
 
-          <div class="auth-pitch">
-            <span class="eyebrow">Welcome back</span>
-            <h2>Your next premiere is one sign-in away.</h2>
-            <p>Pick up your watchlist, manage your bookings, and step back into the story — all from your CinePremiere account.</p>
-
-            <ul class="auth-perks">
-              <li><span class="perk-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Resume saved films and showtimes</li>
-              <li><span class="perk-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/></svg></span>Secure, encrypted session on every device</li>
-              <li><span class="perk-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg></span>Early access to upcoming premieres</li>
-            </ul>
+        <form id="login-form" class="form" novalidate>
+          <div class="form-field">
+            <label class="form-label" for="login-email">Email address</label>
+            <input class="form-input" id="login-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <p class="field-error" aria-live="polite"></p>
           </div>
 
-          <div class="auth-foot-note">© <span id="year"></span> CinePremiere. Crafted for movie lovers.</div>
-        </div>
-      </aside>
-
-      <!-- ============ RIGHT FORM PANEL ============ -->
-      <main class="auth-main">
-        <div class="auth-form-wrap page-enter">
-          <a href="index.html" class="auth-back">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            Back to home
-          </a>
-
-          <h1 class="auth-heading">Welcome back</h1>
-          <p class="auth-subheading">Sign in to continue to your CinePremiere account.</p>
-
-          <!-- form-level error banner -->
-          <div class="form-error-banner" id="form-error" role="alert">
-            <span class="banner-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            </span>
-            <span id="form-error-text"></span>
-          </div>
-
-          <form class="auth-form" id="login-form" novalidate>
-            <div class="field field-stagger">
-              <label class="field-label" for="email">Email address</label>
-              <div class="field-control">
-                <span class="field-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                </span>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  class="field-input"
-                  placeholder="you@example.com"
-                  autocomplete="email"
-                  aria-describedby="email-error"
-                />
-              </div>
-              <div class="field-error" id="email-error"></div>
+          <div class="form-field">
+            <label class="form-label" for="login-password">Password</label>
+            <div class="input-wrap">
+              <input class="form-input" id="login-password" name="password" type="password" data-password-input autocomplete="current-password" placeholder="Your password" required>
+              <button type="button" class="input-trailing" data-password-toggle aria-label="Show password">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              </button>
             </div>
-
-            <div class="field field-stagger">
-              <label class="field-label" for="password">Password</label>
-              <div class="field-control">
-                <span class="field-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </span>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  class="field-input"
-                  placeholder="Enter your password"
-                  autocomplete="current-password"
-                  aria-describedby="password-error"
-                />
-                <button
-                  type="button"
-                  class="field-toggle"
-                  id="password-toggle"
-                  aria-label="Show password"
-                  tabindex="-1"
-                >
-                  <span id="password-toggle-icon"></span>
-                </button>
-              </div>
-              <div class="field-error" id="password-error"></div>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block" id="submit-btn" style="margin-top: 8px;">
-              <span id="btn-text">Sign in</span>
-            </button>
-          </form>
-
-          <div class="auth-switch">
-            Don't have an account?
-            <a href="register.html">Create one for free</a>
+            <p class="field-error" aria-live="polite"></p>
           </div>
-        </div>
-      </main>
-    </div>
 
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-      // inject the default eye icon
-      document.getElementById('password-toggle-icon').innerHTML =
-        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
-    </script>
-    <script type="module" src="js/login.js"></script>
-  </body>
+          <p class="form-alert" role="alert" hidden></p>
+
+          <button type="submit" class="btn btn--primary btn--lg btn--block">Sign in</button>
+        </form>
+
+        <p class="auth-switch">New to CineLux? <a href="register.html" id="register-link">Create an account</a></p>
+        <p class="auth-note">Sessions use rotating refresh cookies — your credentials are never stored in the browser.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/pages/login.js"></script>
+</body>
 </html>

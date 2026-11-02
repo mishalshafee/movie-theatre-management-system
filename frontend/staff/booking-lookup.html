@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff · Booking lookup · CineLux</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/booking.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page">
+    <header class="page-head">
+      <div class="container">
+        <p class="section-eyebrow" data-reveal>Staff tools</p>
+        <h1 class="page-title" data-reveal data-reveal-delay="60">Booking Lookup</h1>
+        <p class="page-subtitle" data-reveal data-reveal-delay="120">
+          Retrieve a booking by its exact ID. <span id="welcome-staff"></span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container container--narrow">
+      <section class="lookup-card" data-reveal>
+        <form id="lookup-form" class="form" novalidate>
+          <div class="form-field">
+            <label class="form-label" for="lookup-id">Booking ID (UUID)</label>
+            <div class="input-wrap">
+              <input class="form-input" id="lookup-id" name="lookupId" type="text"
+                     placeholder="e.g. 7c9e6679-7425-40de-944b-e07fc1f90ae7" spellcheck="false" autocomplete="off">
+              <button type="submit" class="btn btn--primary input-submit">Look up</button>
+            </div>
+            <p class="field-hint">The customer can find their booking ID in the URL of their ticket page (My Bookings → View ticket).</p>
+          </div>
+        </form>
+      </section>
+
+      <div id="lookup-result" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="../js/staff/booking-lookup.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select seats · CineLux</title>
+  <meta name="description" content="Choose your seats with a live seat map — standard, premium and accessible seating.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page page--booking">
+    <div class="container">
+      <div id="showtime-header"></div>
+
+      <div class="seatmap-layout">
+        <div id="seatmap-host" class="seatmap-host"></div>
+
+        <aside class="seatmap-aside">
+          <h2 class="aside-title">Seat legend</h2>
+          <div id="seat-legend" class="seat-legend"></div>
+
+          <div class="selection-summary" id="selection-summary" hidden>
+            <h3 class="aside-title">Your selection</h3>
+            <div class="selection-row">
+              <span>Seats selected</span>
+              <strong id="summary-count">0</strong>
+            </div>
+            <div class="selection-row selection-row--seats">
+              <span>Chosen</span>
+              <strong id="summary-seats">—</strong>
+            </div>
+            <div class="selection-row selection-row--total">
+              <span>Total</span>
+              <strong id="summary-total" data-value="0">$0.00</strong>
+            </div>
+            <p class="selection-note">Up to 8 seats per booking. Prices come straight from the box office system.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="continue-bar" id="continue-bar" hidden>
+      <div class="container continue-bar__inner">
+        <div class="continue-bar__info">
+          <strong id="continue-count-label">No seats selected</strong>
+          <span id="continue-total-label">Select at least one seat to continue</span>
+        </div>
+        <button type="button" class="btn btn--primary btn--lg" id="continue-btn" disabled>Continue to checkout</button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/pages/seat-selection.js"></script>
+</body>
+</html>

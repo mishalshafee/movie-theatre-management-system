@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Monitor backend API server and database connection health status in real time.">
-    <title>Backend Connection Monitor</title>
+    <title>CineLux · System Connection Monitor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,30 +24,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f0f1a;
-            overflow: hidden;
+            background: #0b0f19;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            padding: 24px 16px;
         }
 
-        /* Animated gradient background */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
                 radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0, 210, 255, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 20%, rgba(128, 0, 255, 0.10) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0, 230, 118, 0.06) 0%, transparent 60%);
-            animation: bgShift 12s ease-in-out infinite alternate;
+                radial-gradient(ellipse 60% 50% at 80% 20%, rgba(128, 0, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0, 230, 118, 0.08) 0%, transparent 60%);
+            animation: bgShift 14s ease-in-out infinite alternate;
             z-index: 0;
         }
 
         @keyframes bgShift {
             0% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.1) translate(-2%, 3%); }
+            50% { transform: scale(1.08) translate(-2%, 3%); }
             100% { transform: scale(1) translate(2%, -2%); }
         }
 
-        /* Floating particles */
         .particle {
             position: fixed;
             border-radius: 50%;
@@ -64,258 +64,277 @@
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        /* Monitor card — glassmorphism */
         .monitor-card {
             position: relative;
             z-index: 1;
-            width: 460px;
-            max-width: 92vw;
-            background: rgba(26, 26, 46, 0.65);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            width: 500px;
+            max-width: 95vw;
+            background: rgba(18, 24, 38, 0.88);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px 36px 36px;
+            border-radius: 24px;
+            padding: 38px 32px;
             box-shadow:
-                0 24px 48px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-            animation: cardEntry 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+                0 24px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         }
 
-        @keyframes cardEntry {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.96);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Header */
         .card-header {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .card-header .icon {
-            width: 52px;
-            height: 52px;
-            margin: 0 auto 16px;
-            background: linear-gradient(135deg, #00d2ff, #7b2ff7);
-            border-radius: 14px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 8px 20px rgba(0, 210, 255, 0.25);
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(123, 47, 247, 0.2));
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            font-size: 28px;
+            margin-bottom: 14px;
         }
 
         .card-header h1 {
-            font-size: 22px;
+            font-size: 1.45rem;
             font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.3px;
-            margin-bottom: 6px;
+            color: #fff;
+            letter-spacing: -0.02em;
         }
 
         .card-header p {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.45);
-            font-weight: 400;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            margin-top: 4px;
         }
 
-        /* Status rows */
         .status-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.035);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 13px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 14px;
-            margin-bottom: 14px;
-            transition: background 0.3s ease, border-color 0.3s ease;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
         }
 
         .status-row:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.09);
         }
 
         .status-info {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .status-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            font-size: 19px;
         }
 
         .status-icon.api {
             background: rgba(0, 210, 255, 0.12);
+            color: #00d2ff;
         }
 
         .status-icon.db {
-            background: rgba(123, 47, 247, 0.12);
+            background: rgba(123, 47, 247, 0.15);
+            color: #a78bfa;
+        }
+
+        .status-icon.movies {
+            background: rgba(250, 204, 21, 0.15);
+            color: #facc15;
+        }
+
+        .status-icon.shows {
+            background: rgba(236, 72, 153, 0.15);
+            color: #f472b6;
         }
 
         .status-label {
-            font-size: 15px;
+            font-size: 0.90rem;
             font-weight: 600;
-            color: #e0e0e0;
+            color: #f1f5f9;
         }
 
         .status-sublabel {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.76rem;
+            color: #64748b;
             margin-top: 2px;
         }
 
-        /* Badges */
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            padding: 7px 16px;
-            border-radius: 30px;
-            font-size: 12px;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 9999px;
+            font-size: 0.74rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            white-space: nowrap;
         }
 
         .badge .dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            flex-shrink: 0;
         }
 
-        /* Connected state */
         .badge.ok {
-            background: rgba(0, 230, 118, 0.12);
-            color: #00e676;
-            border: 1px solid rgba(0, 230, 118, 0.2);
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .badge.ok .dot {
-            background: #00e676;
-            box-shadow: 0 0 8px rgba(0, 230, 118, 0.6);
-            animation: pulse 2s ease-in-out infinite;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.4); opacity: 0.6; }
-        }
-
-        /* Error / Offline state */
         .badge.error {
-            background: rgba(255, 23, 68, 0.12);
-            color: #ff1744;
-            border: 1px solid rgba(255, 23, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .badge.error .dot {
-            background: #ff1744;
-            box-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
+            background: #ef4444;
         }
 
-        /* Loading state */
         .badge.loading {
-            background: rgba(255, 196, 0, 0.10);
-            color: #ffc400;
-            border: 1px solid rgba(255, 196, 0, 0.18);
+            background: rgba(148, 163, 184, 0.12);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.25);
         }
 
         .badge.loading .dot {
-            background: #ffc400;
-            animation: blink 1s ease-in-out infinite;
+            background: #94a3b8;
+            animation: pulse 1.2s infinite ease-in-out;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
-        /* Divider */
         .divider {
             height: 1px;
-            background: rgba(255, 255, 255, 0.06);
-            margin: 22px 0;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 18px 0 14px;
         }
 
-        /* Timestamp */
         .timestamp {
             text-align: center;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.3);
-            margin-bottom: 20px;
-            min-height: 16px;
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-bottom: 14px;
         }
 
-        /* Refresh button */
         .btn-refresh {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(123, 47, 247, 0.15));
+            color: #fff;
+            font-size: 0.90rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
+            gap: 8px;
             cursor: pointer;
-            background: linear-gradient(135deg, #00d2ff, #7b2ff7);
-            color: #ffffff;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-refresh::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .btn-refresh:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 210, 255, 0.3);
-        }
-
-        .btn-refresh:hover::before {
-            opacity: 1;
-        }
-
-        .btn-refresh:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.2);
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.25), rgba(123, 47, 247, 0.25));
+            transform: translateY(-1px);
         }
 
         .btn-refresh.is-loading {
             pointer-events: none;
-            opacity: 0.85;
+            opacity: 0.7;
         }
 
-        .btn-refresh .spinner {
+        .quick-nav {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn-primary {
+            background: #2563eb;
+            color: #fff;
+            border: 1px solid #3b82f6;
+        }
+
+        .nav-btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+
+        .nav-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.09);
+            color: #fff;
+        }
+
+        .help-box {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .help-box code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fff;
+            font-family: monospace;
+        }
+
+        .spinner {
             display: none;
             width: 16px;
             height: 16px;
@@ -325,16 +344,8 @@
             animation: spin 0.7s linear infinite;
         }
 
-        .btn-refresh.is-loading .spinner {
+        .is-loading .spinner {
             display: block;
-        }
-
-        .btn-refresh .refresh-icon {
-            transition: transform 0.4s ease;
-        }
-
-        .btn-refresh:hover .refresh-icon {
-            transform: rotate(180deg);
         }
 
         @keyframes spin {
@@ -344,13 +355,11 @@
 </head>
 
 <body>
-    <!-- Floating particles (generated via JS) -->
-
     <div class="monitor-card">
         <div class="card-header">
-            <div class="icon">🔗</div>
-            <h1>System Connections</h1>
-            <p>Backend &amp; Database Health Monitor</p>
+            <div class="icon">🎬</div>
+            <h1>CineLux System Status</h1>
+            <p>Backend API &amp; Database Health Monitor</p>
         </div>
 
         <!-- API Server Status -->
@@ -358,8 +367,8 @@
             <div class="status-info">
                 <div class="status-icon api">🌐</div>
                 <div>
-                    <div class="status-label">API Server Status</div>
-                    <div class="status-sublabel">localhost:4000</div>
+                    <div class="status-label">Express API Server</div>
+                    <div class="status-sublabel" id="api-sublabel">http://localhost:4000</div>
                 </div>
             </div>
             <span id="api-badge" class="badge loading">
@@ -373,14 +382,50 @@
             <div class="status-info">
                 <div class="status-icon db">🗄️</div>
                 <div>
-                    <div class="status-label">Database Status</div>
-                    <div class="status-sublabel">SQLite / PostgreSQL</div>
+                    <div class="status-label">PostgreSQL Database</div>
+                    <div class="status-sublabel" id="db-sublabel">movie_theatre_db</div>
                 </div>
             </div>
             <span id="db-badge" class="badge loading">
                 <span class="dot"></span>
                 Checking...
             </span>
+        </div>
+
+        <!-- Movie Catalog Status -->
+        <div class="status-row">
+            <div class="status-info">
+                <div class="status-icon movies">📽️</div>
+                <div>
+                    <div class="status-label">Movies in Database</div>
+                    <div class="status-sublabel" id="movies-sublabel">Connecting...</div>
+                </div>
+            </div>
+            <span id="movies-badge" class="badge loading">
+                <span class="dot"></span>
+                Checking...
+            </span>
+        </div>
+
+        <!-- Showtimes & Seats Status -->
+        <div class="status-row">
+            <div class="status-info">
+                <div class="status-icon shows">🎟️</div>
+                <div>
+                    <div class="status-label">Showtimes &amp; Screens</div>
+                    <div class="status-sublabel" id="shows-sublabel">Connecting...</div>
+                </div>
+            </div>
+            <span id="shows-badge" class="badge loading">
+                <span class="dot"></span>
+                Checking...
+            </span>
+        </div>
+
+        <div id="help-box" class="help-box">
+            ⚠️ <strong>Backend Offline:</strong> In your terminal, run:<br>
+            <code>cd backend</code><br>
+            <code>npm run dev</code>
         </div>
 
         <div class="divider"></div>
@@ -392,12 +437,21 @@
             <span class="refresh-icon">⟳</span>
             Refresh Connections
         </button>
+
+        <div class="quick-nav">
+            <a href="index.html" class="nav-btn nav-btn-primary">
+                🏠 Open CineLux Homepage
+            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="login.html" class="nav-btn nav-btn-secondary">🔑 Sign in</a>
+                <a href="register.html" class="nav-btn nav-btn-secondary">📝 Register</a>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Create floating particles
         (function createParticles() {
-            const count = 18;
+            const count = 16;
             for (let i = 0; i < count; i++) {
                 const p = document.createElement('div');
                 p.classList.add('particle');
@@ -407,69 +461,81 @@
                 p.style.left = Math.random() * 100 + '%';
                 p.style.animationDuration = (Math.random() * 12 + 10) + 's';
                 p.style.animationDelay = (Math.random() * 10) + 's';
-                if (Math.random() > 0.5) {
-                    p.style.background = 'rgba(123, 47, 247, 0.15)';
-                }
                 document.body.appendChild(p);
             }
         })();
 
-        /**
-         * Sets a badge to a given state.
-         * @param {HTMLElement} badge
-         * @param {'ok'|'error'|'loading'} state
-         * @param {string} text
-         */
         function setBadge(badge, state, text) {
             badge.className = 'badge ' + state;
-            // Keep the dot element, update text
             badge.innerHTML = '<span class="dot"></span> ' + text;
         }
 
         async function checkConnections() {
             const apiBadge = document.getElementById('api-badge');
             const dbBadge = document.getElementById('db-badge');
+            const moviesBadge = document.getElementById('movies-badge');
+            const moviesSub = document.getElementById('movies-sublabel');
+            const showsBadge = document.getElementById('shows-badge');
+            const showsSub = document.getElementById('shows-sublabel');
             const refreshBtn = document.getElementById('refresh-btn');
             const timestamp = document.getElementById('last-checked');
+            const helpBox = document.getElementById('help-box');
 
-            // Loading state
             setBadge(apiBadge, 'loading', 'Checking...');
             setBadge(dbBadge, 'loading', 'Checking...');
+            setBadge(moviesBadge, 'loading', 'Checking...');
+            setBadge(showsBadge, 'loading', 'Checking...');
             refreshBtn.classList.add('is-loading');
+            helpBox.style.display = 'none';
+
+            const baseUrl = window.location.port === '4000' ? '' : 'http://localhost:4000';
 
             try {
-                const response = await fetch('http://localhost:4000/api/health');
-                const data = await response.json();
+                // 1. Health
+                const res = await fetch(baseUrl + '/api/health');
+                const data = await res.json();
+                setBadge(apiBadge, data.status === 'ok' ? 'ok' : 'error', data.status === 'ok' ? 'Connected' : 'Error');
+                setBadge(dbBadge, data.db === 'ok' ? 'ok' : 'error', data.db === 'ok' ? 'Connected' : 'Error');
 
-                // Update API Server badge
-                if (data.status === 'ok') {
-                    setBadge(apiBadge, 'ok', 'Connected');
-                } else {
-                    setBadge(apiBadge, 'error', 'Error');
+                // 2. Movies
+                try {
+                    const mRes = await fetch(baseUrl + '/api/movies?limit=50');
+                    const mData = await mRes.json();
+                    const count = mData?.data?.length ?? 0;
+                    moviesSub.textContent = count + ' films loaded from DB';
+                    setBadge(moviesBadge, 'ok', count + ' Movies');
+                } catch {
+                    moviesSub.textContent = 'Could not load movies';
+                    setBadge(moviesBadge, 'error', 'Error');
                 }
 
-                // Update Database badge
-                if (data.db === 'ok') {
-                    setBadge(dbBadge, 'ok', 'Connected');
-                } else {
-                    setBadge(dbBadge, 'error', 'Error');
+                // 3. Showtimes
+                try {
+                    const sRes = await fetch(baseUrl + '/api/showtimes');
+                    const sData = await sRes.json();
+                    const sCount = sData?.data?.length ?? 0;
+                    showsSub.textContent = sCount + ' upcoming shows scheduled';
+                    setBadge(showsBadge, 'ok', sCount + ' Shows');
+                } catch {
+                    showsSub.textContent = 'Could not load showtimes';
+                    setBadge(showsBadge, 'error', 'Error');
                 }
-            } catch (error) {
-                // Both services are unreachable
+
+            } catch (err) {
                 setBadge(apiBadge, 'error', 'Offline');
                 setBadge(dbBadge, 'error', 'Offline');
-                console.error('Connection failed:', error);
+                setBadge(moviesBadge, 'error', 'Offline');
+                setBadge(showsBadge, 'error', 'Offline');
+                moviesSub.textContent = 'Backend is not running';
+                showsSub.textContent = 'Backend is not running';
+                helpBox.style.display = 'block';
             }
 
-            // Update timestamp
             const now = new Date();
             timestamp.textContent = 'Last checked: ' + now.toLocaleTimeString();
-
-            // Remove loading from button
             refreshBtn.classList.remove('is-loading');
         }
 
-        // Auto-check on page load
         checkConnections();
     </script>
 </body>

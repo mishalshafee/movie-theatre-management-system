@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies · CineLux</title>
+  <meta name="description" content="Browse all movies at CineLux — now showing, coming soon and archive. Search by title and pick a showtime.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/movies.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page">
+    <header class="page-head">
+      <div class="container">
+        <p class="section-eyebrow" data-reveal>Programme</p>
+        <h1 class="page-title" data-reveal data-reveal-delay="60">All Movies</h1>
+        <p class="page-subtitle" data-reveal data-reveal-delay="120">Every film on our slate — pick one to see showtimes.</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="listing-toolbar" data-reveal>
+        <div class="filter-tabs" role="tablist" aria-label="Filter by status">
+          <button type="button" class="filter-chip" data-status="" role="tab">All</button>
+          <button type="button" class="filter-chip is-active" data-status="now_showing" role="tab" aria-selected="true">Now Showing</button>
+          <button type="button" class="filter-chip" data-status="coming_soon" role="tab">Coming Soon</button>
+        </div>
+        <div class="search-box">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="movie-search" placeholder="Search by title…" aria-label="Search movies by title">
+        </div>
+      </div>
+
+      <p class="listing-count" id="movies-count" aria-live="polite"></p>
+      <div class="movie-grid" id="movies-grid"></div>
+      <div id="movies-pagination"></div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="js/pages/movies.js"></script>
+</body>
+</html>

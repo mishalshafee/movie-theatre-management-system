@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings · CineLux</title>
+  <meta name="description" content="Your booking history and digital tickets.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page">
+    <header class="page-head">
+      <div class="container">
+        <p class="section-eyebrow" data-reveal>Your account</p>
+        <h1 class="page-title" data-reveal data-reveal-delay="60">My Bookings</h1>
+        <p class="page-subtitle" data-reveal data-reveal-delay="120">Every ticket you have booked with CineLux.</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="bookings-list" id="bookings-list"></div>
+      <div id="bookings-pagination"></div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="js/pages/my-bookings.js"></script>
+</body>
+</html>

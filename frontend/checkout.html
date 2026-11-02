@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout · CineLux</title>
+  <meta name="description" content="Review your seats, reserve them and complete your demo payment.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page page--booking">
+    <div class="container" id="checkout-host">
+      <header class="page-head page-head--tight">
+        <p class="section-eyebrow" data-reveal>Almost there</p>
+        <h1 class="page-title" data-reveal data-reveal-delay="60">Checkout</h1>
+        <p class="page-subtitle" data-reveal data-reveal-delay="120">Review your seats, then reserve them — you'll have 10 minutes to pay.</p>
+      </header>
+
+      <div class="checkout-grid">
+        <section class="checkout-card" id="checkout-summary" data-reveal></section>
+
+        <aside class="checkout-aside">
+          <div class="checkout-step" id="reserve-step" data-reveal data-reveal-delay="80">
+            <h2 class="aside-title">Reserve your seats</h2>
+            <p class="checkout-step__text">We'll hold your seats for 10 minutes while you pay. If the timer runs out, the seats are released automatically.</p>
+            <button type="button" class="btn btn--primary btn--lg btn--block" id="reserve-btn">
+              Reserve seats &amp; continue
+            </button>
+            <p class="demo-note">Demo booking flow — no real payment is taken at any point.</p>
+          </div>
+
+          <div class="checkout-step checkout-step--hold" id="hold-panel" hidden>
+            <div class="hold-timer">
+              <span class="hold-ring" id="hold-ring" aria-hidden="true"></span>
+              <div class="hold-timer__text">
+                <span class="hold-timer__label">Seats held for you</span>
+                <strong class="hold-timer__count" id="hold-countdown">10:00</strong>
+              </div>
+            </div>
+            <div class="hold-info">
+              <div class="hold-info__row">
+                <span>Booking code</span>
+                <strong class="hold-code" id="hold-code">—</strong>
+              </div>
+              <div class="hold-info__row">
+                <span>Status</span>
+                <span id="hold-status"></span>
+              </div>
+            </div>
+            <div class="hold-seats" id="hold-seats"></div>
+            <div class="hold-total">
+              <span>Total due</span>
+              <strong id="hold-total">$0.00</strong>
+            </div>
+
+            <div class="payment-box" id="payment-box">
+              <div class="payment-box__head">
+                <span class="payment-box__badge">Demo payment</span>
+                <p class="payment-box__text">No card details are collected — this is a demonstration checkout. No real money will be charged.</p>
+              </div>
+              <button type="button" class="btn btn--primary btn--lg btn--block" id="pay-btn">
+                Pay now — confirm booking
+              </button>
+            </div>
+          </div>
+
+          <div class="checkout-links" id="checkout-actions">
+            <a class="link-button" href="seat-selection.html">← Change seats</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="js/pages/checkout.js"></script>
+</body>
+</html>

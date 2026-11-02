@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tickets | ShowBook</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="nav">
+        <a class="logo" href="home.html">ShowBook</a>
+
+       <nav>
+    <a href="home.html">Home</a>
+    <a href="seats.html">Book Seats</a>
+    <a href="payment.html">Payment</a>
+    <a href="profile.html">Profile</a>
+    <a href="movie.html">Movies</a>
+    <a href="tickets.html" class="on">Tickets</a>
+</nav>
+    </header>
+
+    <main class="wrap">
+
+        <section class="glass hero">
+            <h1>My Tickets</h1>
+            <p>View your movie bookings and ticket details.</p>
+        </section>
+
+        <section>
+            <h2>Booking History</h2>
+
+            <div id="ticket-list" class="grid">
+                <p>Loading your tickets...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="tickets.js"></script>
+
+</body>
+</html>

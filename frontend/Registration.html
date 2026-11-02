@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create account – ShowBook</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+<body class="center">
+
+<form class="glass auth" id="SignupForm" >
+
+<h1>Create Account</h1>
+
+<p class="sub">Sign up to manage shows and bookings.</p>
+
+<label for="fullname">Full Name</label>
+<input type="text" id="fullname" name="fullname" autocomplete="name" required>
+
+<label for="email">Email</label>
+<input type="email" id="email" name="email" autocomplete="email" required>
+
+<label for="password">Password</label>
+<input type="password" id="password" name="password" minlength="8" autocomplete="new-password" required>
+
+<label for="confirm-password">Confirm Password</label>
+<input type="password" id="confirm-password" name="confirm-password" minlength="8" autocomplete="new-password" required>
+
+<label class="check"><input type="checkbox" id="terms" required> <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a></span></label>
+
+<button class="btn" type="submit">Sign Up</button>
+
+<p class="foot">Already have an account? <a href="login.html">Log in</a></p>
+</form>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+
+
+</body>
+
+
+</html>

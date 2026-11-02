@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Movie Details - ShowBook</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="nav">
+        <h2>ShowBook</h2>
+
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="seats.html">Book Seats</a>
+            <a href="payment.html">Payment</a>
+            <a href="profile.html">Profile</a>
+            <a href="movie.html" class="on">Movies</a>
+            <a href="tickets.html">Tickets</a>
+        </nav>
+    </header>
+
+    <main class="movie-container">
+
+        <!-- Movie Information -->
+        <section id="movie-details" class="glass">
+
+            <div id="movie-poster" class="poster">
+                
+            </div>
+
+            <div class="movie-info">
+
+                <h1 id="movie-title">Loading movie...</h1>
+
+                <p id="movie-description">
+                    Please wait while we load movie details.
+                </p>
+
+                <p>
+                    <strong>Genre:</strong>
+                    <span id="movie-genre">-</span>
+                </p>
+
+                <p>
+                    <strong>Duration:</strong>
+                    <span id="movie-duration">-</span>
+                </p>
+
+                <p>
+                    <strong>Rating:</strong>
+                    <span id="movie-rating">-</span>
+                </p>
+
+                <p>
+                    <strong>Release Date:</strong>
+                    <span id="movie-release-date">-</span>
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- Showtimes -->
+        <section class="showtimes-section">
+
+            <h2>Available Showtimes</h2>
+
+            <p>Select a showtime to choose your seats.</p>
+
+            <div id="showtime-list">
+
+                <p>Loading showtimes...</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+   <script src="api.js"></script>
+<script src="movie.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Payment – ShowBook</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="nav">
+
+        <a class="logo" href="home.html">ShowBook</a>
+
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="seats.html">Book Seats</a>
+            <a href="payment.html" class="on">Payment</a>
+            <a href="profile.html">Profile</a>
+            <a href="movie.html">Movies</a>
+            <a href="tickets.html">Tickets</a>
+        </nav>
+
+    </header>
+
+    <!-- Main Payment Section -->
+    <main class="wrap book">
+
+        <!-- Payment Form -->
+        <section class="glass">
+
+            <h1>Payment</h1>
+
+            <p class="sub">
+                Enter your card details to confirm your booking.
+            </p>
+
+            <form id="PayForm">
+
+                <label for="cn">Name on card</label>
+                <input
+                    id="cn"
+                    type="text"
+                    autocomplete="cc-name"
+                    required
+                >
+
+                <label for="cc">Card number</label>
+                <input
+                    id="cc"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    maxlength="19"
+                    placeholder="1234 5678 9012 3456"
+                    required
+                >
+
+                <div class="row keep">
+
+                    <div>
+                        <label for="ex">Expiry</label>
+                        <input
+                            id="ex"
+                            type="text"
+                            autocomplete="cc-exp"
+                            placeholder="MM/YY"
+                            maxlength="5"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="cv">CVV</label>
+                        <input
+                            id="cv"
+                            type="password"
+                            inputmode="numeric"
+                            autocomplete="cc-csc"
+                            maxlength="4"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button class="btn" type="submit" id="pay">
+                    Pay Now
+                </button>
+
+                <p id="payment-message" role="status"></p>
+
+            </form>
+
+        </section>
+
+        <!-- Order Summary -->
+        <aside class="glass sum">
+
+            <h2>Order Summary</h2>
+
+            <div>
+                <span id="sum-show">No show selected</span>
+                <span></span>
+            </div>
+
+            <div>
+                <span id="sum-seats">No seats selected</span>
+                <span id="sum-sub">$0.00</span>
+            </div>
+
+            <div>
+                <span>Booking fee</span>
+                <span id="sum-fee">$0.00</span>
+            </div>
+
+            <div class="total">
+                <span>Total</span>
+                <span id="sum-total">$0.00</span>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="api.js"></script>
+    <script src="payment.js"></script>
+
+</body>
+
+</html>
+

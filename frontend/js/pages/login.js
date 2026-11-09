@@ -1,95 +1,89 @@
 /**
  * Login page.
+ * Uses the existing auth core (core/auth.js login + session persistence).
+ * Redirects by role after sign-in: customer → next/home, admin → admin
+ * dashboard, staff → booking lookup. Honors the `next` parameter.
  */
 
 import { initPage } from "../core/session.js";
-import { login } from "../core/auth.js";
-import { friendlyMessage } from "../core/api.js";
-import { navigate, safeNext, resolveUrl, currentPath } from "../core/router-helpers.js";
 import { PAGES } from "../config.js";
-import { validators, validateFields, applyApiErrorToForm } from "../utils/validators.js";
+import { resolveUrl, navigate, safeNext, queryParams } from "../core/router-helpers.js";
+import { login } from "../core/auth.js";
+import { listMovies } from "../services/movies.service.js";
 import { setButtonLoading } from "../components/loader.js";
 import { toast } from "../components/toast.js";
+import { friendlyMessage } from "../core/api.js";
 import { qs } from "../utils/dom.js";
+import { validators, validateFields, applyApiErrorToForm } from "../utils/validators.js";
 import { icons } from "../components/icons.js";
 
-function wirePasswordToggle(form) {
-  const toggle = form.querySelector("[data-password-toggle]");
-  const input = form.querySelector("[data-password-input]");
-  toggle?.addEventListener("click", () => {
-    const show = input.type === "password";
-    input.type = show ? "text" : "password";
-    toggle.innerHTML = show ? icons.eyeOff({ size: 18 }) : icons.eye({ size: 18 });
-    toggle.setAttribute("aria-label", show ? "Hide password" : "Show password");
-    input.focus({ preventScroll: true });
+function wirePasswordToggles() {
+  document.querySelectorAll("[data-toggle-password]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const input = btn.parentElement.querySelector("input");
+      if (!input) return;
+      input.type = input.type === "password" ? "text" : "password";
+      btn.setAttribute("aria-label", input.type === "password" ? "Show password" : "Hide password");
+    });
   });
 }
 
-function landingFor(user, next) {
-  if (next) return next;
-  if (user.role === "admin") return PAGES.adminDashboard;
-  if (user.role === "staff") return PAGES.staffLookup;
-  return PAGES.home;
+/** Fill the decorative film-strip with real now-showing posters. */
+async function decorateReel() {
+  const reel = qs("#auth-reel");
+  if (!reel) return;
+  try {
+    const { data } = await listMovies({ status: "now_showing", page: 1, limit: 3 });
+    const frames = reel.querySelectorAll(".auth-brand__frame");
+    data.slice(0, 3).forEach((movie, i) => {
+      if (!frames[i] || !movie.posterUrl) return;
+      const img = document.createElement("img");
+      img.src = movie.posterUrl;
+      img.alt = "";
+      frames[i].append(img);
+    });
+  } catch { /* decorative only */ }
+}
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const form = qs("#login-form");
+  const button = qs("#login-submit");
+
+  const fields = [
+    { name: "email", value: form.email.value, rules: [validators.email()] },
+    { name: "password", value: form.password.value, rules: [validators.required("Password")] },
+  ];
+  const { valid } = validateFields(form, fields);
+  if (!valid) return;
+
+  setButtonLoading(button, true, "Signing in…");
+  try {
+    const user = await login(form.email.value.trim(), form.password.value);
+
+    let target;
+    if (user.role === "admin") target = PAGES.adminDashboard;
+    else if (user.role === "staff") target = PAGES.staffLookup;
+    else {
+      const { next } = queryParams({ next: "string" });
+      target = safeNext(next, PAGES.home);
+    }
+
+    toast.success(`Welcome back, ${user.fullName || user.email}!`);
+    setTimeout(() => navigate(target), 600);
+  } catch (error) {
+    setButtonLoading(button, false);
+    if (!applyApiErrorToForm(form, error)) {
+      toast.error(friendlyMessage(error));
+    }
+  }
 }
 
 async function main() {
-  const { user } = await initPage({ auth: "guest" });
-
-  // Show "registration succeeded" hint when arriving from register.html
-  const params = new URLSearchParams(location.search);
-  if (params.get("registered") === "1") {
-    toast.success("Account created! Sign in with your new credentials.");
-  }
-
-  const form = qs("#login-form");
-  if (!form) return;
-  wirePasswordToggle(form);
-  // Only honour ?next= when actually present; otherwise null = role-based landing.
-  const rawNext = params.get("next");
-  const next = rawNext ? safeNext(rawNext) : null;
-
-  // Already signed in (e.g. navigating back) → leave immediately.
-  if (user) { navigate(landingFor(user, next)); return; }
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const submit = form.querySelector('[type="submit"]');
-    const email = form.email.value;
-    const password = form.password.value;
-
-    const { valid } = validateFields(form, [
-      { name: "email", value: email, rules: [validators.email()] },
-      { name: "password", value: password, rules: [validators.required("Password")] },
-    ]);
-    if (!valid) return;
-
-    setButtonLoading(submit, true, "Signing in…");
-    try {
-      const signedIn = await login(email.trim(), password);
-      toast.success(`Welcome back, ${signedIn.fullName || signedIn.email}!`);
-      setTimeout(() => navigate(landingFor(signedIn, next)), 500);
-    } catch (error) {
-      setButtonLoading(submit, false);
-      if (!applyApiErrorToForm(form, error)) {
-        if (error.code === "INVALID_CREDENTIALS") {
-          form.querySelector(".form-alert").textContent = friendlyMessage(error);
-          form.querySelector(".form-alert").hidden = false;
-        } else {
-          toast.error(friendlyMessage(error));
-        }
-      }
-    }
-  });
-
-  // Pre-fill demo hint if the URL carries ?demo=admin (used by docs/testing).
-  if (params.get("demo")) {
-    form.email.value = "";
-  }
-
-  qs("#to-register")?.addEventListener("click", () => {
-    navigate(`${PAGES.register}?next=${encodeURIComponent(next || currentPath())}`);
-  });
-  qs("#register-link")?.setAttribute("href", resolveUrl(PAGES.register));
+  await initPage({ auth: "guest" });
+  wirePasswordToggles();
+  decorateReel();
+  qs("#login-form").addEventListener("submit", handleSubmit);
 }
 
 main();

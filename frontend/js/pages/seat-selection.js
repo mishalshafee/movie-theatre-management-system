@@ -6,14 +6,15 @@
  * prices or availability. Maximum 8 seats per booking (backend rule).
  *
  * Selection is handed to checkout via sessionStorage (booking data only —
- * never tokens).
+ * never tokens). A manual refresh button re-syncs availability.
  */
 
 import { initPage } from "../core/session.js";
 import { PAGES, RULES } from "../config.js";
 import { resolveUrl, navigate, queryParams } from "../core/router-helpers.js";
 import { getSeatMap } from "../services/showtimes.service.js";
-import { skeletonHTML, errorStateHTML } from "../components/loader.js";
+import { posterElement } from "../components/movie-card.js";
+import { skeletonHTML, errorStateHTML, setButtonLoading } from "../components/loader.js";
 import { friendlyMessage } from "../core/api.js";
 import { toast } from "../components/toast.js";
 import { qs, clear, escapeHtml, el } from "../utils/dom.js";
@@ -46,7 +47,9 @@ async function loadSeatMap() {
     renderSeatMap(data);
     renderLegend();
     updateSummary();
+
     if (isPast(data.showtime.startsAt)) {
+      clear(host);
       host.innerHTML = errorStateHTML({
         title: "This showtime has already started",
         message: "Bookings are closed for this screening. Please choose a future showtime.",
@@ -82,19 +85,29 @@ function renderHeader(showtime) {
         </div>
         <p class="showtime-header__prices">
           Standard <strong>${formatMoney(showtime.priceStandard)}</strong>
-          <span class="dot">·</span> Premium <strong>${formatMoney(showtime.pricePremium)}</strong>
+          <span class="dot-sep">·</span> Premium <strong>${formatMoney(showtime.pricePremium)}</strong>
         </p>
       </div>
+      <button type="button" class="btn btn--ghost btn--sm" id="refresh-seatmap" title="Refresh availability">
+        ${icons.refresh({ size: 15 })} Refresh
+      </button>
     </div>`;
+  qs("#refresh-seatmap").addEventListener("click", () => {
+    toast.info("Refreshing seat availability…");
+    loadSeatMap();
+  });
 }
 
-function seatButton(seat) {
+/* ------------------------------------------------------------------ */
+
+function seatButton(seat, rowLabel) {
   const btn = el("button", {
     type: "button",
     class: `seat seat--${seat.type}`,
-    dataset: { seatId: seat.id, status: seat.status },
-    "aria-label": `Seat ${seat.rowLabel ?? ""}${seat.number}, ${seat.type}, ${seat.status}`,
-    title: `Row seat ${seat.number} · ${seat.type} · ${formatMoney(seat.price)}`,
+    dataset: { seatId: seat.id },
+    "aria-label": `Seat ${rowLabel}${seat.number}, ${seat.type}, ${seat.status}`,
+    "aria-pressed": "false",
+    "data-tip": `${rowLabel}${seat.number} · ${seat.type} · ${formatMoney(seat.price)}`,
   });
   btn.textContent = String(seat.number);
 
@@ -106,7 +119,7 @@ function seatButton(seat) {
     return btn;
   }
 
-  btn.addEventListener("click", () => toggleSeat(seat, btn));
+  btn.addEventListener("click", () => toggleSeat({ ...seat, rowLabel }, btn));
   return btn;
 }
 
@@ -118,10 +131,15 @@ function toggleSeat(seat, btn) {
   } else {
     if (state.selected.size >= MAX_SEATS) {
       toast.warning(`You can select up to ${MAX_SEATS} seats per booking.`);
+      btn.animate?.(
+        [{ transform: "translateX(0)" }, { transform: "translateX(-3px)" }, { transform: "translateX(3px)" }, { transform: "translateX(0)" }],
+        { duration: 240 },
+      );
       return;
     }
     state.selected.set(seat.id, seat);
     btn.classList.add("seat--selected");
+    btn.classList.add("animate-pop");
     btn.setAttribute("aria-pressed", "true");
   }
   updateSummary();
@@ -131,37 +149,35 @@ function renderSeatMap(data) {
   const host = qs("#seatmap-host");
   clear(host);
 
-  const auditorium = el("div", { class: "auditorium" });
-  auditorium.append(
-    el("div", { class: "cinema-screen", role: "presentation" }, [
-      el("div", { class: "cinema-screen__curve" }),
-      el("span", { class: "cinema-screen__label", text: "Screen" }),
-    ])
-  );
+  const map = el("div", { class: "seat-map-wrap" });
+  const grid = el("div", { class: "seat-map", role: "group", "aria-label": "Seat map" });
 
-  const map = el("div", { class: "seat-map", role: "group", "aria-label": "Seat map" });
+  let previousWasPremium = null;
   data.rows.forEach((row) => {
-    const rowEl = el("div", { class: "seat-row" });
+    const isPremium = row.seats.every((s) => s.type === "premium");
+    const rowEl = el("div", { class: `seat-row${isPremium ? " seat-row--premium" : ""}${previousWasPremium !== null && isPremium !== previousWasPremium ? " seat-row--section-break" : ""}` });
+    previousWasPremium = isPremium;
     rowEl.append(el("span", { class: "seat-row__label", "aria-hidden": "true", text: row.label }));
-    row.seats.forEach((seat) => rowEl.append(seatButton({ ...seat, rowLabel: row.label })));
+    row.seats.forEach((seat) => rowEl.append(seatButton(seat, row.label)));
     rowEl.append(el("span", { class: "seat-row__label", "aria-hidden": "true", text: row.label }));
-    map.append(rowEl);
+    grid.append(rowEl);
   });
 
-  auditorium.append(map);
-  host.append(auditorium);
+  map.append(grid);
+  host.append(map);
 }
 
 function renderLegend() {
   const legend = qs("#seat-legend");
   legend.innerHTML = `
-    <span class="legend-item"><span class="legend-dot legend-dot--available"></span>Available</span>
+    <span class="legend-item"><span class="legend-dot"></span>Available</span>
     <span class="legend-item"><span class="legend-dot legend-dot--selected"></span>Selected</span>
-    <span class="legend-item"><span class="legend-dot legend-dot--held"></span>Held</span>
-    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span>Sold</span>
-    <span class="legend-item"><span class="legend-dot legend-dot--premium"></span>Premium</span>
-  `;
+    <span class="legend-item"><span class="legend-dot legend-dot--premium"></span>Premium row</span>
+    <span class="legend-item"><span class="legend-dot legend-dot--held"></span>Held by another guest</span>
+    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span>Sold</span>`;
 }
+
+/* ------------------------------------------------------------------ */
 
 function updateSummary() {
   const bar = qs("#continue-bar");
@@ -169,31 +185,62 @@ function updateSummary() {
   const seats = [...state.selected.values()];
   const total = seats.reduce((sum, s) => sum + Number(s.price || 0), 0);
 
-  summary.hidden = seats.length === 0;
   bar.hidden = false;
+  summary.hidden = seats.length === 0;
 
-  qs("#summary-count").textContent = String(seats.length);
-  qs("#summary-seats").textContent = seats.length
-    ? seats.map((s) => s.rowLabel ?? s.number).join(", ")
-    : "No seats selected yet";
+  const showtime = state.seatMap?.showtime;
 
-  const totalEl = qs("#summary-total");
-  const previous = Number(totalEl.dataset.value || 0);
-  if (previous !== total) {
-    totalEl.classList.remove("total-pop");
-    void totalEl.offsetWidth; // restart animation
-    totalEl.classList.add("total-pop");
+  if (seats.length && showtime) {
+    summary.innerHTML = `
+      <div class="selection-summary__movie">
+        <div class="selection-summary__poster" id="summary-poster"></div>
+        <div>
+          <h3 class="selection-summary__title">${escapeHtml(showtime.movie.title)}</h3>
+          <div class="selection-summary__meta">
+            <span class="selection-summary__meta-row">${icons.calendar({ size: 13 })} ${formatDate(showtime.startsAt)}</span>
+            <span class="selection-summary__meta-row">${icons.clock({ size: 13 })} ${formatTime(showtime.startsAt)} · ${escapeHtml(showtime.screen.name)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="seat-chips" aria-live="polite">
+        ${seats.map((s) => `<span class="seat-chip">${escapeHtml(`${s.rowLabel}${s.number}`)}<em>${formatMoney(s.price)}</em></span>`).join("")}
+      </div>
+      <div class="summary-total">
+        <span>${seats.length} seat${seats.length === 1 ? "" : "s"} selected</span>
+        <strong data-total>${formatMoney(total)}</strong>
+      </div>
+      <p class="summary-note">${icons.info({ size: 13 })} Prices come directly from the cinema backend. Seats are held for 10 minutes once you continue to checkout.</p>`;
+
+    const posterHost = qs("#summary-poster");
+    if (posterHost) {
+      posterHost.append(posterElement(showtime.movie.posterUrl, showtime.movie.title, "selection-summary__poster"));
+    }
+
+    // Animated total transition
+    const totalEl = summary.querySelector("[data-total]");
+    const previous = Number(totalEl.dataset.value || 0);
+    if (previous !== total) {
+      totalEl.classList.remove("total-pop");
+      void totalEl.offsetWidth;
+      totalEl.classList.add("total-pop");
+    }
+    totalEl.dataset.value = String(total);
   }
-  totalEl.dataset.value = String(total);
-  totalEl.textContent = formatMoney(total);
 
+  // Continue bar
   qs("#continue-btn").disabled = seats.length === 0;
-  qs("#continue-count-label").textContent = seats.length
-    ? `${seats.length} seat${seats.length === 1 ? "" : "s"} selected`
-    : "No seats selected";
-  qs("#continue-total-label").textContent = seats.length
-    ? `${seats.map((s) => `${s.rowLabel ?? s.number}`).join(", ")} · total ${formatMoney(total)}`
+  qs("#continue-seats-label").textContent = seats.length
+    ? `${seats.length} seat${seats.length === 1 ? "" : "s"} · ${seats.map((s) => `${s.rowLabel}${s.number}`).join(", ")}`
     : "Select at least one seat to continue";
+  qs("#continue-total-label").innerHTML = seats.length
+    ? `Total <strong>${formatMoney(total)}</strong> · held 10 min at checkout`
+    : "";
+
+  // Max seats progress dots
+  const pill = qs("#max-seats-pill");
+  pill.innerHTML = `<span class="max-seats-pill__track">${Array.from({ length: MAX_SEATS }, (_, i) =>
+    `<span class="max-seats-pill__dot${i < seats.length ? " is-filled" : ""}"></span>`).join("")}</span>
+    <span>${seats.length}/${MAX_SEATS}</span>`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -205,7 +252,7 @@ function persistAndContinue() {
   // Keep only the data checkout actually needs.
   const selection = {
     showtimeId: state.showtimeId,
-    seats: seats.map((s) => ({ id: s.id, number: s.number, type: s.type, price: Number(s.price), status: s.status })),
+    seats: seats.map((s) => ({ id: s.id, row: s.rowLabel, number: s.number, type: s.type, price: Number(s.price), status: s.status })),
     savedAt: Date.now(),
   };
   try {

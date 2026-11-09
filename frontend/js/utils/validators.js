@@ -63,13 +63,20 @@ export const validators = {
     const v = String(value ?? "").trim();
     if (!v) return null; // optional by default
     if (v.length > 2048) return `${label} is too long`;
-    try {
-      const u = new URL(v);
-      if (!/^https?:$/.test(u.protocol)) return `${label} must start with http:// or https://`;
-      return null;
-    } catch {
-      return `${label} must be a valid URL`;
+    // Absolute http(s) URL
+    if (/^https?:\/\//i.test(v)) {
+      try {
+        new URL(v);
+        return null;
+      } catch {
+        return `${label} must be a valid URL`;
+      }
     }
+    // Relative asset path — the same format the backend seed data uses
+    // (e.g. images/movies/movie-1.svg). The backend stores posterUrl as a
+    // plain string, so both forms are accepted.
+    if (!/\s/.test(v) && /^[\w@%\-./~]+$/i.test(v) && /\.[a-z0-9]+$/i.test(v)) return null;
+    return `${label} must be an http(s) URL or a relative asset path`;
   },
 
   dateISO: (label = "This field") => (value) => {

@@ -3,51 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Staff · Booking lookup · CineLux</title>
-  <meta name="robots" content="noindex">
+  <title>Staff · Booking Lookup · CineLux</title>
+  <meta name="description" content="CineLux staff tool — look up any booking by its ID.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/animations.css">
-  <link rel="stylesheet" href="../css/booking.css">
+  <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
 
-  <main id="main" class="page">
-    <header class="page-head">
-      <div class="container">
-        <p class="section-eyebrow" data-reveal>Staff tools</p>
-        <h1 class="page-title" data-reveal data-reveal-delay="60">Booking Lookup</h1>
-        <p class="page-subtitle" data-reveal data-reveal-delay="120">
-          Retrieve a booking by its exact ID. <span id="welcome-staff"></span>
-        </p>
+  <main id="main" class="page-enter">
+    <section class="lookup-hero">
+      <span class="lookup-hero__icon">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </span>
+      <div>
+        <p class="section-eyebrow" style="justify-content:center">Staff workspace</p>
+        <h1 class="section-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Booking Lookup</h1>
+        <p class="section-sub" style="margin-inline:auto">Enter a booking ID (UUID) to verify a ticket at the counter. The backend authorizes staff to read any booking — there is deliberately no all-bookings search.</p>
       </div>
-    </header>
+      <p class="meta-chip meta-chip--blue" id="welcome-staff"></p>
 
-    <div class="container container--narrow">
-      <section class="lookup-card" data-reveal>
-        <form id="lookup-form" class="form" novalidate>
-          <div class="form-field">
-            <label class="form-label" for="lookup-id">Booking ID (UUID)</label>
-            <div class="input-wrap">
-              <input class="form-input" id="lookup-id" name="lookupId" type="text"
-                     placeholder="e.g. 7c9e6679-7425-40de-944b-e07fc1f90ae7" spellcheck="false" autocomplete="off">
-              <button type="submit" class="btn btn--primary input-submit">Look up</button>
-            </div>
-            <p class="field-hint">The customer can find their booking ID in the URL of their ticket page (My Bookings → View ticket).</p>
-          </div>
-        </form>
-      </section>
+      <form class="lookup-form" id="lookup-form" novalidate>
+        <div class="input-group" style="flex:1;min-width:240px">
+          <input class="form-input mono" id="lookup-id" name="lookupId" type="text" placeholder="7c9e6679-7425-40de-944b-e07fc1f90ae7" autocomplete="off" spellcheck="false" aria-label="Booking ID">
+          <button type="button" class="input-group__action" data-paste aria-label="Paste from clipboard">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2.5" width="8" height="5" rx="1.5"/><path d="M8 4.5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-13a2 2 0 0 0-2-2h-2"/></svg>
+          </button>
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Look up booking
+        </button>
+      </form>
+    </section>
 
+    <section class="section container container--narrow" style="padding-top: 2rem;">
       <div id="lookup-result" aria-live="polite"></div>
-    </div>
+    </section>
   </main>
 
   <div id="site-footer"></div>

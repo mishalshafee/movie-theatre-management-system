@@ -4,34 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Bookings · CineLux</title>
-  <meta name="description" content="Your booking history and digital tickets.">
+  <meta name="description" content="Your CineLux booking history — holds, confirmed tickets and past visits.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/ticket.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
 
-  <main id="main" class="page">
-    <header class="page-head">
-      <div class="container">
-        <p class="section-eyebrow" data-reveal>Your account</p>
-        <h1 class="page-title" data-reveal data-reveal-delay="60">My Bookings</h1>
-        <p class="page-subtitle" data-reveal data-reveal-delay="120">Every ticket you have booked with CineLux.</p>
-      </div>
-    </header>
+  <main id="main" class="page-enter">
+    <div class="container container--wide" style="padding-top: 1.8rem; padding-bottom: clamp(4rem, 8vw, 7rem);">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+        <span aria-current="page">My Bookings</span>
+      </nav>
+      <header class="page-hero" style="padding-bottom: 0.4rem">
+        <p class="section-eyebrow">Your visits</p>
+        <h1 class="page-hero__title">My Bookings</h1>
+        <p class="page-hero__sub">Every reservation made with this account — including active holds and confirmed tickets. Data comes from GET /api/bookings.</p>
+      </header>
 
-    <div class="container">
-      <div class="bookings-list" id="bookings-list"></div>
-      <div id="bookings-pagination"></div>
+      <section class="section" style="padding-top: 1.4rem;">
+        <div class="bookings-toolbar" data-reveal>
+          <div class="segmented" id="bookings-filter" role="tablist" aria-label="Filter bookings by status">
+            <button type="button" class="segmented__btn is-active" data-status="" role="tab">All</button>
+            <button type="button" class="segmented__btn" data-status="confirmed" role="tab">Confirmed</button>
+            <button type="button" class="segmented__btn" data-status="held" role="tab">Held</button>
+            <button type="button" class="segmented__btn" data-status="cancelled" role="tab">Cancelled</button>
+            <button type="button" class="segmented__btn" data-status="expired" role="tab">Expired</button>
+          </div>
+          <span class="movies-toolbar__count" id="bookings-count" aria-live="polite"></span>
+        </div>
+
+        <div id="bookings-list" class="bookings-list" aria-busy="true"></div>
+        <div id="bookings-pagination"></div>
+      </section>
     </div>
   </main>
 

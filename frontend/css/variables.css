@@ -1,67 +1,121 @@
 /* ==========================================================================
-   CineLux design tokens — the single source of truth for the whole UI.
+   CineLux — Design Tokens · Premium Cinema Identity
+   The single source of truth for every page, component and print style.
+   Visual language: deep-space navy, warm gold highlights, steel blue accents.
    ========================================================================== */
 
 :root {
-  /* Color palette (premium cinema, light surfaces) */
-  --bg: #F8FAFC;
-  --surface: #FFFFFF;
-  --surface-2: #F1F5F9;
-  --text: #172033;
-  --text-2: #64748B;
-  --accent: #E63946;
-  --accent-hover: #C92F3B;
-  --accent-soft: #FDECEE;
-  --border: #E2E8F0;
-  --success: #16A34A;
-  --success-soft: #EAF7EF;
-  --warning: #F59E0B;
-  --warning-soft: #FEF4E2;
-  --error: #DC2626;
-  --error-soft: #FDECEC;
-  --info: #2563EB;
-  --info-soft: #EAF1FE;
+  /* ---- Color system -------------------------------------------------- */
+  /* Base canvas */
+  --bg: #0B1020;             /* primary page background            */
+  --bg-2: #111827;           /* secondary background / bands        */
+  --bg-3: #0D1426;           /* deepest wells (hero underlay)       */
 
-  /* Typography */
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --fs-xs: 0.75rem;      /* 12px */
-  --fs-sm: 0.8125rem;    /* 13px */
-  --fs-md: 0.9375rem;    /* 15px */
-  --fs-base: 1rem;       /* 16px */
-  --fs-lg: 1.125rem;     /* 18px */
-  --fs-xl: 1.375rem;     /* 22px */
-  --fs-2xl: 1.75rem;     /* 28px */
-  --fs-3xl: 2.25rem;     /* 36px */
-  --fs-4xl: clamp(2.4rem, 4.4vw, 3.5rem);
+  /* Surfaces */
+  --surface: #172238;        /* card surface                        */
+  --surface-2: #1D2A44;      /* elevated surface / hover            */
+  --surface-3: #243353;      /* highest surface (chips on hover)    */
+  --surface-glass: rgba(23, 34, 56, 0.72);
 
-  /* Radii */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  /* Brand accents */
+  --accent: #D6B36A;         /* CineLux gold                        */
+  --accent-strong: #E7C983;  /* hover / highlight gold              */
+  --accent-deep: #A8873F;    /* pressed gold                        */
+  --accent-ink: #221A07;     /* text on gold                        */
+  --accent-soft: rgba(214, 179, 106, 0.14);
+  --accent-line: rgba(214, 179, 106, 0.34);
+
+  --blue: #60A5FA;           /* steel-blue secondary accent         */
+  --blue-strong: #93C5FD;
+  --blue-soft: rgba(96, 165, 250, 0.13);
+  --blue-line: rgba(96, 165, 250, 0.32);
+
+  /* Text */
+  --text: #FFFFFF;
+  --text-2: #AAB4C5;         /* secondary text                      */
+  --text-3: #77839B;         /* faint meta text                     */
+  --text-gold: #E3C57F;
+
+  /* Lines & borders */
+  --line: rgba(170, 180, 197, 0.14);
+  --line-strong: rgba(170, 180, 197, 0.26);
+
+  /* Status */
+  --success: #34D399;
+  --success-soft: rgba(52, 211, 153, 0.13);
+  --warning: #FBBF24;
+  --warning-soft: rgba(251, 191, 36, 0.13);
+  --error: #F87171;
+  --error-soft: rgba(248, 113, 113, 0.13);
+  --info: #60A5FA;
+  --info-soft: rgba(96, 165, 250, 0.13);
+
+  /* Semantic tints used by booking states */
+  --held: #FBBF24;
+  --sold: #64748B;
+
+  /* ---- Typography ----------------------------------------------------- */
+  --font-display: "Marcellus", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  --fs-xs: 0.75rem;          /* 12px */
+  --fs-sm: 0.8125rem;        /* 13px */
+  --fs-md: 0.9375rem;        /* 15px */
+  --fs-base: 1rem;           /* 16px */
+  --fs-lg: 1.125rem;         /* 18px */
+  --fs-xl: 1.375rem;         /* 22px */
+  --fs-2xl: 1.75rem;         /* 28px */
+  --fs-3xl: 2.25rem;         /* 36px */
+  --fs-4xl: clamp(2.5rem, 5vw, 4rem);
+  --fs-hero: clamp(2.6rem, 5.4vw, 4.35rem);
+
+  --tracking-caps: 0.16em;   /* eyebrow / small-caps letter spacing  */
+  --tracking-wide: 0.04em;
+
+  /* ---- Radii ----------------------------------------------------------- */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 999px;
 
-  /* Shadows (subtle, layered) */
-  --shadow-xs: 0 1px 2px rgba(23, 32, 51, 0.06);
-  --shadow-sm: 0 1px 3px rgba(23, 32, 51, 0.07), 0 1px 2px rgba(23, 32, 51, 0.05);
-  --shadow-md: 0 6px 16px -4px rgba(23, 32, 51, 0.12), 0 2px 6px -2px rgba(23, 32, 51, 0.06);
-  --shadow-lg: 0 18px 40px -12px rgba(23, 32, 51, 0.18), 0 4px 12px -4px rgba(23, 32, 51, 0.08);
-  --shadow-accent: 0 10px 24px -8px rgba(230, 57, 70, 0.45);
+  /* ---- Shadows (dark-tuned, restrained) ------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(2, 6, 18, 0.5);
+  --shadow-sm: 0 2px 8px rgba(2, 6, 18, 0.45);
+  --shadow-md: 0 10px 26px -8px rgba(2, 6, 18, 0.62);
+  --shadow-lg: 0 24px 56px -18px rgba(2, 6, 18, 0.72);
+  --shadow-gold: 0 10px 30px -12px rgba(214, 179, 106, 0.38);
+  --shadow-blue: 0 10px 30px -12px rgba(96, 165, 250, 0.32);
+  --shadow-inset-line: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  /* Motion */
+  /* ---- Motion ---------------------------------------------------------- */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.44, 1);
   --t-fast: 140ms;
   --t-med: 240ms;
   --t-slow: 420ms;
+  --t-page: 620ms;
 
-  /* Layout */
+  /* ---- Layout ---------------------------------------------------------- */
   --container: 1200px;
+  --container-wide: 1320px;
   --container-narrow: 780px;
-  --header-h: 68px;
-  --focus-ring: 0 0 0 3px rgba(230, 57, 70, 0.28);
+  --header-h: 72px;
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px rgba(214, 179, 106, 0.55);
 
-  /* Seat map */
-  --seat-size: 34px;
+  /* ---- Seat map -------------------------------------------------------- */
+  --seat-size: 36px;
+  --seat-size-lg: 40px;
   --seat-gap: 7px;
+
+  /* ---- Header backdrop -------------------------------------------------- */
+  --header-bg: rgba(11, 16, 32, 0.82);
+
+  /* Ambient brand gradients (used sparingly) */
+  --grad-gold: linear-gradient(135deg, #E7C983 0%, #D6B36A 48%, #B89450 100%);
+  --grad-surface: linear-gradient(180deg, rgba(29, 42, 68, 0.55), rgba(23, 34, 56, 0.9));
+  --grad-hero-fade: linear-gradient(90deg, rgba(11, 16, 32, 0.96) 0%, rgba(11, 16, 32, 0.78) 34%, rgba(11, 16, 32, 0.18) 72%, rgba(11, 16, 32, 0.55) 100%);
+  --grad-hero-bottom: linear-gradient(180deg, rgba(11, 16, 32, 0) 40%, rgba(11, 16, 32, 0.92) 100%);
 }

@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CineLux · Premium Cinema Experience</title>
   <meta name="description" content="Book your seats at CineLux — a premium cinema experience. Browse now showing and coming soon movies, pick your seats and pay in seconds.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/movies.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -21,13 +23,18 @@
   <div id="site-header"></div>
 
   <main id="main">
-    <!-- Hero: rendered from the featured Now Showing movie (live API data) -->
+    <!-- Cinematic hero: featured movie from the live API -->
     <div id="hero">
-      <section class="hero">
+      <section class="hero" aria-label="Featured movie">
+        <div class="hero__art" aria-hidden="true">
+          <img src="images/hero/hero-collage.jpg" alt="Cinema hero banner">
+        </div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+        <div class="hero__glow" aria-hidden="true"></div>
         <div class="container hero__inner">
           <div class="hero__content">
             <div class="skeleton skeleton--line w-30"></div>
-            <div class="skeleton skeleton--line w-70" style="height:44px"></div>
+            <div class="skeleton skeleton--line w-70" style="height:46px"></div>
             <div class="skeleton skeleton--line w-45"></div>
             <div class="skeleton skeleton--block" style="height:72px"></div>
           </div>
@@ -38,68 +45,85 @@
 
     <!-- Now Showing -->
     <section class="section" id="now-showing">
-      <div class="container">
+      <div class="container container--wide">
         <header class="section-head" data-reveal>
           <div>
             <p class="section-eyebrow">In cinemas this week</p>
             <h2 class="section-title">Now Showing</h2>
+            <p class="section-sub">Live from the cinema backend — pick a film and your seats are minutes away.</p>
           </div>
           <span class="section-count" data-section-count></span>
         </header>
-        <div class="movie-grid"></div>
+        <div class="movie-grid" aria-busy="true"></div>
       </div>
     </section>
 
-    <!-- Experience band -->
+    <!-- Cinema experience band -->
     <section class="experience" data-reveal>
-      <div class="container experience__grid">
+      <div class="container container--wide experience__grid">
         <article class="experience__item">
-          <span class="experience__icon">🎬</span>
-          <h3>Laser-sharp picture</h3>
+          <span class="experience__num" aria-hidden="true">01</span>
+          <span class="experience__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+          </span>
+          <h3>Laser-Sharp Picture</h3>
           <p>4K laser projection calibrated every morning for reference-quality image.</p>
         </article>
         <article class="experience__item">
-          <span class="experience__icon">🔊</span>
-          <h3>Dolby Atmos sound</h3>
+          <span class="experience__num" aria-hidden="true">02</span>
+          <span class="experience__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l5 4V6l-5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12"/></svg>
+          </span>
+          <h3>Dolby Atmos Sound</h3>
           <p>64 channels of immersive audio that move with the story around you.</p>
         </article>
         <article class="experience__item">
-          <span class="experience__icon">🛋️</span>
-          <h3>Recliner comfort</h3>
+          <span class="experience__num" aria-hidden="true">03</span>
+          <span class="experience__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 11V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v5"/><path d="M4 11a2 2 0 0 1 2 2v2h12v-2a2 2 0 1 1 4 0v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"/><path d="M7 18v3M17 18v3"/></svg>
+          </span>
+          <h3>Recliner Comfort</h3>
           <p>Generous legroom and electric recliners in every premium row.</p>
         </article>
         <article class="experience__item">
-          <span class="experience__icon">📱</span>
-          <h3>60-second booking</h3>
+          <span class="experience__num" aria-hidden="true">04</span>
+          <span class="experience__icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+          </span>
+          <h3>60-Second Booking</h3>
           <p>Pick your seats, hold them for 10 minutes and pay — no queues.</p>
         </article>
       </div>
     </section>
 
     <!-- Coming Soon -->
-    <section class="section section--alt" id="coming-soon">
-      <div class="container">
+    <section class="section" id="coming-soon">
+      <div class="container container--wide">
         <header class="section-head" data-reveal>
           <div>
             <p class="section-eyebrow">On the horizon</p>
             <h2 class="section-title">Coming Soon</h2>
+            <p class="section-sub">Future releases straight from the cinema catalogue.</p>
           </div>
           <span class="section-count" data-section-count></span>
         </header>
-        <div class="movie-grid"></div>
+        <div class="movie-grid" aria-busy="true"></div>
       </div>
     </section>
 
     <!-- Promo CTA -->
     <section class="promo" data-reveal>
-      <div class="container promo__inner">
-        <div>
-          <h2 class="promo__title">Ready for the big screen?</h2>
-          <p class="promo__text">Create a free account and your tickets are two taps away. Seats are held for you while you decide.</p>
-        </div>
-        <div class="promo__actions">
-          <a class="btn btn--light btn--lg" href="register.html">Create free account</a>
-          <a class="btn btn--outline-light btn--lg" href="movies.html">Browse movies</a>
+      <div class="container container--wide">
+        <div class="promo__inner">
+          <div>
+            <p class="section-eyebrow">Join CineLux</p>
+            <h2 class="promo__title">Ready for the big screen?</h2>
+            <p class="promo__text">Create a free account and your tickets are two taps away. Seats are held for you while you decide.</p>
+          </div>
+          <div class="promo__actions">
+            <a class="btn btn--primary btn--lg" href="register.html">Create free account</a>
+            <a class="btn btn--outline-light btn--lg" href="movies.html">Browse movies</a>
+          </div>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 /**
- * Reusable site navbar.
- * Renders into a container based on the restored auth state and re-renders
- * after login/logout. Includes the animated mobile drawer.
+ * CineLux site navbar — premium dark chrome.
+ * Renders from the restored auth state, re-renders after login/logout.
+ * Includes: scroll condensation, expanding search, animated mobile drawer.
  */
 
 import { PAGES, APP_NAME } from "../config.js";
@@ -32,9 +32,7 @@ function linksFor(user) {
 function isActive(href) {
   const target = resolveUrl(href);
   const [targetPath, targetQuery] = target.split("?");
-  const samePath = location.pathname.endsWith(targetPath.replace(/^\.?\//, "").split("/").pop())
-    && location.pathname.includes(targetPath.replace(/^\.\.\//, "").replace(/[^/]*$/, "").slice(0, -0));
-  if (!samePath && !location.pathname.endsWith(targetPath.split("/").pop())) return false;
+  if (!location.pathname.endsWith(targetPath.split("/").pop())) return false;
   if (targetQuery) {
     const wanted = new URLSearchParams(targetQuery);
     const actual = new URLSearchParams(location.search);
@@ -42,7 +40,6 @@ function isActive(href) {
       if (actual.get(key) !== value) return false;
     }
   } else if (targetPath.endsWith("movies.html") && location.search) {
-    // movies.html without a status query shouldn't highlight filtered views
     const status = new URLSearchParams(location.search).get("status");
     if (status) return false;
   }
@@ -62,7 +59,7 @@ function userMenuHTML(user) {
   if (user.role === "staff") {
     items.push({ href: PAGES.staffLookup, label: "Booking Lookup", icon: icons.search({ size: 16 }) });
   }
-  items.push({ href: PAGES.account, label: "Account", icon: icons.user({ size: 16 }) });
+  items.push({ href: PAGES.account, label: "My Account", icon: icons.user({ size: 16 }) });
 
   return `
     <div class="user-menu" data-user-menu>
@@ -101,12 +98,21 @@ function navHTML(user) {
       </div>`;
 
   return `
-    <div class="navbar container">
+    <div class="navbar container container--wide">
       <a class="brand" href="${resolveUrl(PAGES.home)}" aria-label="${APP_NAME} home">
-        ${logoMark(34)}<span class="brand__name">Cine<strong>Lux</strong></span>
+        ${logoMark(36)}<span class="brand__name">Cine<strong>Lux</strong></span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">${links}</nav>
       <div class="nav-actions">
+        <div class="nav-search" data-nav-search>
+          <form class="nav-search__form" role="search" action="${resolveUrl(PAGES.movies)}" method="get">
+            <input class="nav-search__input" type="search" name="q" placeholder="Search movies…" aria-label="Search movies" autocomplete="off">
+            <button class="nav-search__submit" type="submit" aria-label="Search">${icons.search({ size: 15 })}</button>
+          </form>
+          <button type="button" class="nav-search__toggle" aria-label="Open search" aria-expanded="false" data-search-toggle>
+            ${icons.search({ size: 19 })}
+          </button>
+        </div>
         ${authArea}
         <button type="button" class="hamburger" aria-label="Open menu" aria-expanded="false" data-nav-toggle>
           <span></span><span></span><span></span>
@@ -116,12 +122,14 @@ function navHTML(user) {
     <div class="mobile-drawer" data-mobile-drawer hidden>
       <nav class="mobile-drawer__links" aria-label="Mobile navigation">
         ${linksFor(user).map((link) => `
-          <a class="mobile-drawer__link${isActive(link.href) ? " is-active" : ""}" href="${resolveUrl(link.href)}">${link.label}</a>`).join("")}
+          <a class="mobile-drawer__link${isActive(link.href) ? " is-active" : ""}" href="${resolveUrl(link.href)}">
+            ${link.label}${icons.chevronRight({ size: 16 })}
+          </a>`).join("")}
         ${user
-          ? `<a class="mobile-drawer__link" href="${resolveUrl(PAGES.account)}">Account</a>
+          ? `<a class="mobile-drawer__link" href="${resolveUrl(PAGES.account)}">My Account${icons.chevronRight({ size: 16 })}</a>
              <button type="button" class="mobile-drawer__link mobile-drawer__link--danger" data-logout>Sign out</button>`
           : `<a class="mobile-drawer__link" href="${resolveUrl(PAGES.login)}">Sign in</a>
-             <a class="mobile-drawer__link mobile-drawer__link--accent" href="${resolveUrl(PAGES.register)}">Get Started</a>`}
+             <a class="mobile-drawer__link mobile-drawer__link--accent" href="${resolveUrl(PAGES.register)}">Create free account</a>`}
       </nav>
     </div>`;
 }
@@ -138,11 +146,43 @@ function escapeHtml(value) {
  * @param {object|null} user
  */
 export function renderNavbar(container, user) {
-  container.innerHTML = `<header class="site-header">${navHTML(user)}</header>`;
+  container.innerHTML = `<header class="site-header" data-site-header>${navHTML(user)}</header>`;
   wireNavbar(container, user);
 }
 
 function wireNavbar(container, user) {
+  const header = container.querySelector("[data-site-header]");
+
+  // Condensed header on scroll
+  const onScroll = () => header?.classList.toggle("is-scrolled", window.scrollY > 12);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Expanding search
+  const searchWrap = container.querySelector("[data-nav-search]");
+  const searchToggle = container.querySelector("[data-search-toggle]");
+  const searchInput = container.querySelector(".nav-search__input");
+  searchToggle?.addEventListener("click", () => {
+    const open = searchWrap.classList.toggle("is-open");
+    searchToggle.setAttribute("aria-expanded", String(open));
+    searchToggle.setAttribute("aria-label", open ? "Close search" : "Open search");
+    if (open) setTimeout(() => searchInput?.focus(), 180);
+    else if (searchInput) searchInput.value = "";
+  });
+  document.addEventListener("click", (event) => {
+    if (!searchWrap?.classList.contains("is-open")) return;
+    if (!event.target.closest("[data-nav-search]")) {
+      searchWrap.classList.remove("is-open");
+      searchToggle?.setAttribute("aria-expanded", "false");
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && searchWrap?.classList.contains("is-open")) {
+      searchWrap.classList.remove("is-open");
+      searchToggle?.focus?.();
+    }
+  });
+
   // Mobile drawer
   const toggle = container.querySelector("[data-nav-toggle]");
   const drawer = container.querySelector("[data-mobile-drawer]");
@@ -151,6 +191,10 @@ function wireNavbar(container, user) {
     drawer.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.classList.toggle("is-open", open);
+    if (open) drawer.animate?.(
+      [{ opacity: 0, transform: "translateY(-8px)" }, { opacity: 1, transform: "none" }],
+      { duration: 220, easing: "cubic-bezier(0.16,1,0.3,1)" },
+    );
   });
   drawer?.querySelectorAll("a").forEach((a) =>
     a.addEventListener("click", () => {
@@ -176,14 +220,16 @@ function wireNavbar(container, user) {
     }
   });
 
-  // Logout (both desktop menu and mobile drawer)
+  // Logout (desktop menu + mobile drawer)
   container.querySelectorAll("[data-logout]").forEach((button) => {
     button.addEventListener("click", async () => {
+      button.disabled = true;
       try {
         await logout();
         toast.success("You have been signed out. See you soon!");
         setTimeout(() => { window.location.href = resolveUrl(PAGES.home); }, 700);
       } catch {
+        button.disabled = false;
         toast.error("Could not sign out right now. Please try again.");
       }
     });

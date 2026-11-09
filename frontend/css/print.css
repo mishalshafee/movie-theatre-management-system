@@ -1,0 +1,157 @@
+/* ==========================================================================
+   CineLux — Print stylesheet (digital ticket).
+   Invoked via window.print() on booking-details.html.
+   Prints ONLY the ticket on a clean light background (ink-friendly).
+   ========================================================================== */
+
+@media print {
+  @page {
+    margin: 10mm;
+  }
+
+  /* Hide the entire app chrome */
+  body *,
+  body::before {
+    visibility: hidden;
+  }
+
+  /* Reveal only the ticket subtree */
+  #ticket,
+  #ticket * {
+    visibility: visible;
+  }
+
+  #ticket {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    max-width: 780px;
+    margin: 0;
+    grid-template-columns: minmax(0, 1.6fr) minmax(170px, 0.9fr);
+    border: 1.5px solid #1a1a1a;
+    border-radius: 12px;
+    background: #ffffff !important;
+    color: #10192e;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  /* Force light-theme colors inside the ticket */
+  #ticket .ticket__main,
+  #ticket .ticket__stub {
+    background: #ffffff !important;
+    color: #10192e;
+  }
+
+  #ticket .ticket__brand-row {
+    border-bottom-color: #c9cfd8;
+  }
+
+  #ticket h1,
+  #ticket h2,
+  #ticket h3,
+  #ticket .ticket__title,
+  #ticket .ticket__info-row dd {
+    color: #10192e !important;
+  }
+
+  #ticket .ticket__info-row {
+    background: #f5f6f8;
+    border-color: #d9dde3;
+  }
+
+  #ticket .ticket__info-row dt,
+  #ticket .ticket__stub-label,
+  #ticket .ticket__code-label,
+  #ticket .qr-deco__caption,
+  #ticket .ticket__print-note {
+    color: #5a6372 !important;
+  }
+
+  #ticket .ticket__code,
+  #ticket .ticket__total strong,
+  #ticket .ticket__when .icon,
+  #ticket .status-chip {
+    color: #8a6a1f !important;
+    text-shadow: none !important;
+  }
+
+  #ticket .status-chip {
+    border-color: #b89450 !important;
+    background: #f7efdc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #ticket .ticket__payment-note {
+    background: #f7efdc !important;
+    border-color: #b89450 !important;
+    color: #5c4712 !important;
+  }
+
+  #ticket .meta-chip {
+    background: #f5f6f8 !important;
+    border-color: #d9dde3 !important;
+    color: #3d4757 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #ticket .ticket__perf {
+    background-image: linear-gradient(180deg, #9aa3af 55%, transparent 45%) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #ticket .ticket__perf::before,
+  #ticket .ticket__perf::after {
+    background: #ffffff !important;
+    box-shadow: inset 0 0 0 1px #d9dde3;
+  }
+
+  #ticket .qr-deco {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #ticket .qr-deco i.f,
+  #ticket .qr-deco .finder {
+    background: #10192e !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #ticket .qr-deco .finder::after {
+    background: #ffffff !important;
+  }
+
+  #ticket .seat-chip {
+    background: #f7efdc !important;
+    border-color: #b89450 !important;
+    color: #5c4712 !important;
+  }
+
+  #ticket .seat-chip em {
+    color: #5a6372 !important;
+  }
+
+  /* brand wordmark readable */
+  #ticket .brand__name {
+    color: #10192e !important;
+  }
+
+  #ticket .brand__name strong {
+    color: #8a6a1f !important;
+  }
+
+  /* avoid page split inside ticket */
+  #ticket {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  #ticket img {
+    max-height: 340px;
+  }
+}

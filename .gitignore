@@ -1,32 +1,28 @@
-# Backend / server-side files — never commit secrets
+# Node dependencies
+node_modules/
+**/node_modules/
+
+# Environment secrets
 .env
 .env.*
+**/.env
+**/.env.*
+
+# Allow safe example files
 !.env.example
-*.pem
-*.key
+!**/.env.example
 
-# Dependencies
-node_modules/
-package-lock.json.bak
-
-# Databases & local data
-*.db
-*.sqlite
-pgdata/
-data/
-
-# Logs & temporary files
+# Logs
 *.log
-tmp/
-temp/
+npm-debug.log*
+
+# System files
 .DS_Store
 Thumbs.db
 
-# Editor / OS
-.vscode/
-.idea/
+# ZIP archives
+*.zip
 
-# Build artifacts (frontend needs none)
-dist/
-build/
-.cache/
+# Backup files
+*.backup
+*.dump

@@ -29,76 +29,54 @@ const { rows: existingMovies } = await pool.query(
   "SELECT count(*)::int AS count FROM movies",
 );
 
-if (existingMovies[0].count === 0) {
-  const initialMovies = [
-    {
-      title: "Stellar Horizon",
-      description:
-        "A lone navigator drifts toward the edge of charted space in search of a signal that could rewrite humanity.",
-      durationMinutes: 138,
-      genre: "Sci-Fi",
-      rating: "8.7",
-      posterUrl: "images/movies/movie-1.svg",
-      releaseDate: "2026-03-15",
-      status: "now_showing",
-    },
-    {
-      title: "Midnight Reverie",
-      description:
-        "A sleep researcher discovers her dreams are being broadcast to strangers across the city.",
-      durationMinutes: 116,
-      genre: "Thriller",
-      rating: "8.2",
-      posterUrl: "images/movies/movie-2.svg",
-      releaseDate: "2026-04-10",
-      status: "now_showing",
-    },
-    {
-      title: "Crimson Vale",
-      description:
-        "Three generations of a family confront a long-buried secret in a valley that never forgets.",
-      durationMinutes: 124,
-      genre: "Drama",
-      rating: "8.9",
-      posterUrl: "images/movies/movie-3.svg",
-      releaseDate: "2026-04-22",
-      status: "now_showing",
-    },
-    {
-      title: "Echoes of Tomorrow",
-      description:
-        "When the future starts leaving voicemails, a historian must decide which one to answer.",
-      durationMinutes: 151,
-      genre: "Sci-Fi",
-      rating: "8.5",
-      posterUrl: "images/movies/movie-4.svg",
-      releaseDate: "2026-06-01",
-      status: "coming_soon",
-    },
-    {
-      title: "The Last Cartographer",
-      description:
-        "The final mapmaker embarks on one last expedition to chart a forest that keeps moving.",
-      durationMinutes: 129,
-      genre: "Adventure",
-      rating: "8.0",
-      posterUrl: "images/movies/movie-5.svg",
-      releaseDate: "2026-06-18",
-      status: "coming_soon",
-    },
-    {
-      title: "Paper Moon Boulevard",
-      description:
-        "Two strangers keep meeting on the same neon street at the same impossible hour every night.",
-      durationMinutes: 108,
-      genre: "Romance",
-      rating: "7.8",
-      posterUrl: "images/movies/movie-6.svg",
-      releaseDate: "2026-07-04",
-      status: "coming_soon",
-    },
-  ];
+const initialMovies = [
+  {
+    title: "Avatar: The Way of Water",
+    description:
+      "Jake Sully lives with his newfound family formed on the extrasolar moon Pandora. Once a familiar threat returns to finish what was previously started, Jake must work with Neytiri and the army of the Na'vi race to protect their home.",
+    durationMinutes: 192,
+    genre: "Sci-Fi / Adventure",
+    rating: "8.8",
+    posterUrl: "images/movies/avatar.jpg",
+    releaseDate: "2026-03-15",
+    status: "now_showing",
+  },
+  {
+    title: "Dune: Part Three",
+    description:
+      "The epic conclusion of Paul Atreides' mythic journey as he unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+    durationMinutes: 165,
+    genre: "Sci-Fi / Action",
+    rating: "9.0",
+    posterUrl: "images/movies/dune.jpg",
+    releaseDate: "2026-04-10",
+    status: "now_showing",
+  },
+  {
+    title: "Redemption",
+    description:
+      "Every ending has a beginning. When a seasoned operative is pulled back into the shadows of the city, truth becomes the only weapon capable of breaking the cycle of betrayal.",
+    durationMinutes: 135,
+    genre: "Action / Thriller",
+    rating: "8.4",
+    posterUrl: "images/movies/redemption.jpg",
+    releaseDate: "2026-04-22",
+    status: "now_showing",
+  },
+  {
+    title: "Frozen",
+    description:
+      "When the newly-crowned Queen Elsa accidentally uses her power to curse her home in infinite winter, her sister Anna teams up with a mountain man, his playful reindeer, and a snowman to change the weather condition.",
+    durationMinutes: 102,
+    genre: "Animation / Family",
+    rating: "8.5",
+    posterUrl: "images/movies/frozen.jpg",
+    releaseDate: "2026-06-01",
+    status: "coming_soon",
+  },
+];
 
+if (existingMovies[0].count === 0) {
   for (const m of initialMovies) {
     await pool.query(
       `INSERT INTO movies
@@ -117,6 +95,29 @@ if (existingMovies[0].count === 0) {
     );
   }
   console.log(`seeded ${initialMovies.length} movies into database`);
+} else {
+  // Update legacy seed titles/posters if they exist
+  await pool.query(
+    `UPDATE movies SET title = $1, description = $2, duration_minutes = $3, genre = $4, rating = $5, poster_url = $6, status = $7
+     WHERE title = 'Stellar Horizon' OR poster_url LIKE '%movie-1%'`,
+    [initialMovies[0].title, initialMovies[0].description, initialMovies[0].durationMinutes, initialMovies[0].genre, initialMovies[0].rating, initialMovies[0].posterUrl, initialMovies[0].status]
+  );
+  await pool.query(
+    `UPDATE movies SET title = $1, description = $2, duration_minutes = $3, genre = $4, rating = $5, poster_url = $6, status = $7
+     WHERE title = 'Midnight Reverie' OR poster_url LIKE '%movie-2%'`,
+    [initialMovies[1].title, initialMovies[1].description, initialMovies[1].durationMinutes, initialMovies[1].genre, initialMovies[1].rating, initialMovies[1].posterUrl, initialMovies[1].status]
+  );
+  await pool.query(
+    `UPDATE movies SET title = $1, description = $2, duration_minutes = $3, genre = $4, rating = $5, poster_url = $6, status = $7
+     WHERE title = 'Crimson Vale' OR poster_url LIKE '%movie-3%'`,
+    [initialMovies[2].title, initialMovies[2].description, initialMovies[2].durationMinutes, initialMovies[2].genre, initialMovies[2].rating, initialMovies[2].posterUrl, initialMovies[2].status]
+  );
+  await pool.query(
+    `UPDATE movies SET title = $1, description = $2, duration_minutes = $3, genre = $4, rating = $5, poster_url = $6, status = $7
+     WHERE title = 'Echoes of Tomorrow' OR poster_url LIKE '%movie-4%'`,
+    [initialMovies[3].title, initialMovies[3].description, initialMovies[3].durationMinutes, initialMovies[3].genre, initialMovies[3].rating, initialMovies[3].posterUrl, initialMovies[3].status]
+  );
+  console.log("updated existing movie records to current posters & titles");
 }
 
 // 2. Seed screens and seats if empty

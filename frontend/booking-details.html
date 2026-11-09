@@ -3,32 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking details · CineLux</title>
-  <meta name="description" content="Your digital cinema ticket.">
+  <title>Your Ticket · CineLux</title>
+  <meta name="description" content="Your CineLux digital cinema ticket — booking reference, seats and showtime.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/booking.css">
+  <link rel="stylesheet" href="css/ticket.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/print.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
 
-  <main id="main" class="page page--booking">
-    <div class="container container--narrow">
-      <header class="page-head page-head--tight">
-        <p class="section-eyebrow" data-reveal>Your ticket</p>
-        <h1 class="page-title" data-reveal data-reveal-delay="60">Booking details</h1>
-      </header>
+  <main id="main" class="page-enter">
+    <div class="container container--narrow ticket-page" style="padding-top: 1.8rem; padding-bottom: clamp(4rem, 8vw, 7rem);">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+        <a href="my-bookings.html">My Bookings</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+        <span aria-current="page">Ticket</span>
+      </nav>
 
-      <div id="ticket-host"></div>
-      <div class="ticket-actions" id="ticket-actions"></div>
+      <div id="ticket-banner"></div>
+      <div id="ticket-host" aria-busy="true">
+        <div class="ticket-skeleton"><div class="skeleton skeleton--block" style="height:420px"></div></div>
+      </div>
+      <div id="ticket-actions" class="ticket-actions"></div>
     </div>
   </main>
 

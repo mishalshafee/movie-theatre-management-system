@@ -1,543 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Monitor backend API server and database connection health status in real time.">
-    <title>CineLux · System Connection Monitor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0b0f19;
-            color: #f1f5f9;
-            overflow-x: hidden;
-            padding: 24px 16px;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0, 210, 255, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 20%, rgba(128, 0, 255, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(0, 230, 118, 0.08) 0%, transparent 60%);
-            animation: bgShift 14s ease-in-out infinite alternate;
-            z-index: 0;
-        }
-
-        @keyframes bgShift {
-            0% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.08) translate(-2%, 3%); }
-            100% { transform: scale(1) translate(2%, -2%); }
-        }
-
-        .particle {
-            position: fixed;
-            border-radius: 50%;
-            background: rgba(0, 210, 255, 0.15);
-            pointer-events: none;
-            animation: float linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
-        .monitor-card {
-            position: relative;
-            z-index: 1;
-            width: 500px;
-            max-width: 95vw;
-            background: rgba(18, 24, 38, 0.88);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 38px 32px;
-            box-shadow:
-                0 24px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        }
-
-        .card-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .card-header .icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(123, 47, 247, 0.2));
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            font-size: 28px;
-            margin-bottom: 14px;
-        }
-
-        .card-header h1 {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.02em;
-        }
-
-        .card-header p {
-            font-size: 0.88rem;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-
-        .status-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .status-row:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.09);
-        }
-
-        .status-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .status-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
-            font-size: 19px;
-        }
-
-        .status-icon.api {
-            background: rgba(0, 210, 255, 0.12);
-            color: #00d2ff;
-        }
-
-        .status-icon.db {
-            background: rgba(123, 47, 247, 0.15);
-            color: #a78bfa;
-        }
-
-        .status-icon.movies {
-            background: rgba(250, 204, 21, 0.15);
-            color: #facc15;
-        }
-
-        .status-icon.shows {
-            background: rgba(236, 72, 153, 0.15);
-            color: #f472b6;
-        }
-
-        .status-label {
-            font-size: 0.90rem;
-            font-weight: 600;
-            color: #f1f5f9;
-        }
-
-        .status-sublabel {
-            font-size: 0.76rem;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 11px;
-            border-radius: 9999px;
-            font-size: 0.74rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-        }
-
-        .badge .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .badge.ok {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .badge.ok .dot {
-            background: #10b981;
-            box-shadow: 0 0 8px #10b981;
-        }
-
-        .badge.error {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .badge.error .dot {
-            background: #ef4444;
-        }
-
-        .badge.loading {
-            background: rgba(148, 163, 184, 0.12);
-            color: #94a3b8;
-            border: 1px solid rgba(148, 163, 184, 0.25);
-        }
-
-        .badge.loading .dot {
-            background: #94a3b8;
-            animation: pulse 1.2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-            margin: 18px 0 14px;
-        }
-
-        .timestamp {
-            text-align: center;
-            font-size: 0.78rem;
-            color: #64748b;
-            margin-bottom: 14px;
-        }
-
-        .btn-refresh {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(123, 47, 247, 0.15));
-            color: #fff;
-            font-size: 0.90rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-refresh:hover {
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.25), rgba(123, 47, 247, 0.25));
-            transform: translateY(-1px);
-        }
-
-        .btn-refresh.is-loading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .quick-nav {
-            margin-top: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 11px 16px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 0.88rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn-primary {
-            background: #2563eb;
-            color: #fff;
-            border: 1px solid #3b82f6;
-        }
-
-        .nav-btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .nav-btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: #cbd5e1;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            flex: 1;
-        }
-
-        .nav-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.09);
-            color: #fff;
-        }
-
-        .help-box {
-            margin-top: 14px;
-            padding: 12px 14px;
-            border-radius: 10px;
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            font-size: 0.82rem;
-            line-height: 1.4;
-            display: none;
-        }
-
-        .help-box code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #fff;
-            font-family: monospace;
-        }
-
-        .spinner {
-            display: none;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-
-        .is-loading .spinner {
-            display: block;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Monitor · CineLux</title>
+  <meta name="description" content="CineLux backend health monitor.">
+  <meta name="theme-color" content="#0B1020">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
-
 <body>
-    <div class="monitor-card">
-        <div class="card-header">
-            <div class="icon">🎬</div>
-            <h1>CineLux System Status</h1>
-            <p>Backend API &amp; Database Health Monitor</p>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="page-enter">
+    <div class="container container--narrow" style="padding-top: 1.8rem;">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+        <span aria-current="page">System Monitor</span>
+      </nav>
+      <header class="page-hero" style="padding-bottom: 0.6rem">
+        <p class="section-eyebrow">Operations</p>
+        <h1 class="page-hero__title">System Monitor</h1>
+        <p class="page-hero__sub">Live health of the CineLux backend (GET /api/health). This page is served by Express at <span class="mono">/monitor</span>.</p>
+      </header>
+
+      <section class="section" style="padding-top: 1.4rem;">
+        <div class="monitor-grid" id="monitor-grid">
+          <div class="monitor-card">
+            <span class="monitor-card__led" id="led-api"></span>
+            <h2 class="card__title" style="font-size:var(--fs-lg)">Backend API</h2>
+            <p class="text-2" id="api-status">Checking…</p>
+            <button type="button" class="btn btn--secondary btn--sm" id="refresh-health">Re-check</button>
+          </div>
+          <div class="monitor-card">
+            <span class="monitor-card__led" id="led-db"></span>
+            <h2 class="card__title" style="font-size:var(--fs-lg)">PostgreSQL</h2>
+            <p class="text-2" id="db-status">Checking…</p>
+            <p class="field-hint">Database connectivity reported by the backend.</p>
+          </div>
+          <div class="monitor-card">
+            <span class="monitor-card__led monitor-card__led--ok"></span>
+            <h2 class="card__title" style="font-size:var(--fs-lg)">Frontend</h2>
+            <p class="text-2">This page loaded successfully — static assets are being served.</p>
+            <p class="field-hint">Last checked: <span id="last-check" class="mono"></span></p>
+          </div>
         </div>
-
-        <!-- API Server Status -->
-        <div class="status-row">
-            <div class="status-info">
-                <div class="status-icon api">🌐</div>
-                <div>
-                    <div class="status-label">Express API Server</div>
-                    <div class="status-sublabel" id="api-sublabel">http://localhost:4000</div>
-                </div>
-            </div>
-            <span id="api-badge" class="badge loading">
-                <span class="dot"></span>
-                Checking...
-            </span>
-        </div>
-
-        <!-- Database Status -->
-        <div class="status-row">
-            <div class="status-info">
-                <div class="status-icon db">🗄️</div>
-                <div>
-                    <div class="status-label">PostgreSQL Database</div>
-                    <div class="status-sublabel" id="db-sublabel">movie_theatre_db</div>
-                </div>
-            </div>
-            <span id="db-badge" class="badge loading">
-                <span class="dot"></span>
-                Checking...
-            </span>
-        </div>
-
-        <!-- Movie Catalog Status -->
-        <div class="status-row">
-            <div class="status-info">
-                <div class="status-icon movies">📽️</div>
-                <div>
-                    <div class="status-label">Movies in Database</div>
-                    <div class="status-sublabel" id="movies-sublabel">Connecting...</div>
-                </div>
-            </div>
-            <span id="movies-badge" class="badge loading">
-                <span class="dot"></span>
-                Checking...
-            </span>
-        </div>
-
-        <!-- Showtimes & Seats Status -->
-        <div class="status-row">
-            <div class="status-info">
-                <div class="status-icon shows">🎟️</div>
-                <div>
-                    <div class="status-label">Showtimes &amp; Screens</div>
-                    <div class="status-sublabel" id="shows-sublabel">Connecting...</div>
-                </div>
-            </div>
-            <span id="shows-badge" class="badge loading">
-                <span class="dot"></span>
-                Checking...
-            </span>
-        </div>
-
-        <div id="help-box" class="help-box">
-            ⚠️ <strong>Backend Offline:</strong> In your terminal, run:<br>
-            <code>cd backend</code><br>
-            <code>npm run dev</code>
-        </div>
-
-        <div class="divider"></div>
-
-        <div id="last-checked" class="timestamp"></div>
-
-        <button id="refresh-btn" class="btn-refresh" onclick="checkConnections()">
-            <span class="spinner"></span>
-            <span class="refresh-icon">⟳</span>
-            Refresh Connections
-        </button>
-
-        <div class="quick-nav">
-            <a href="index.html" class="nav-btn nav-btn-primary">
-                🏠 Open CineLux Homepage
-            </a>
-            <div style="display: flex; gap: 10px;">
-                <a href="login.html" class="nav-btn nav-btn-secondary">🔑 Sign in</a>
-                <a href="register.html" class="nav-btn nav-btn-secondary">📝 Register</a>
-            </div>
-        </div>
+      </section>
     </div>
+  </main>
 
-    <script>
-        (function createParticles() {
-            const count = 16;
-            for (let i = 0; i < count; i++) {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                const size = Math.random() * 4 + 2;
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (Math.random() * 12 + 10) + 's';
-                p.style.animationDelay = (Math.random() * 10) + 's';
-                document.body.appendChild(p);
-            }
-        })();
+  <div id="site-footer"></div>
 
-        function setBadge(badge, state, text) {
-            badge.className = 'badge ' + state;
-            badge.innerHTML = '<span class="dot"></span> ' + text;
-        }
+  <script type="module">
+    import { initPage } from "./js/core/session.js";
+    import { apiRequest } from "./js/core/api.js";
+    import { qs } from "./js/utils/dom.js";
+    import { toast } from "./js/components/toast.js";
 
-        async function checkConnections() {
-            const apiBadge = document.getElementById('api-badge');
-            const dbBadge = document.getElementById('db-badge');
-            const moviesBadge = document.getElementById('movies-badge');
-            const moviesSub = document.getElementById('movies-sublabel');
-            const showsBadge = document.getElementById('shows-badge');
-            const showsSub = document.getElementById('shows-sublabel');
-            const refreshBtn = document.getElementById('refresh-btn');
-            const timestamp = document.getElementById('last-checked');
-            const helpBox = document.getElementById('help-box');
+    async function checkHealth() {
+      const apiStatus = qs("#api-status");
+      const dbStatus = qs("#db-status");
+      const ledApi = qs("#led-api");
+      const ledDb = qs("#led-db");
+      const lastCheck = qs("#last-check");
 
-            setBadge(apiBadge, 'loading', 'Checking...');
-            setBadge(dbBadge, 'loading', 'Checking...');
-            setBadge(moviesBadge, 'loading', 'Checking...');
-            setBadge(showsBadge, 'loading', 'Checking...');
-            refreshBtn.classList.add('is-loading');
-            helpBox.style.display = 'none';
+      apiStatus.textContent = "Checking…";
+      dbStatus.textContent = "Checking…";
+      ledApi.className = "monitor-card__led";
+      ledDb.className = "monitor-card__led";
 
-            const baseUrl = window.location.port === '4000' ? '' : 'http://localhost:4000';
+      try {
+        const data = await apiRequest("/api/health", { auth: false, timeoutMs: 6000 });
+        const ok = data?.status === "ok" && data?.db === "ok";
+        ledApi.className = `monitor-card__led${ok ? " monitor-card__led--ok" : " monitor-card__led--down"}`;
+        ledDb.className = `monitor-card__led${data?.db === "ok" ? " monitor-card__led--ok" : " monitor-card__led--down"}`;
+        apiStatus.textContent = ok ? "API is up and responding." : `API responded with status: ${data?.status ?? "unknown"}`;
+        dbStatus.textContent = data?.db === "ok" ? "Database connection is healthy." : "Database is not responding.";
+      } catch {
+        ledApi.className = "monitor-card__led monitor-card__led--down";
+        ledDb.className = "monitor-card__led monitor-card__led--down";
+        apiStatus.textContent = "Cannot reach the backend on port 4000.";
+        dbStatus.textContent = "Unknown — the backend is unreachable.";
+      } finally {
+        lastCheck.textContent = new Date().toLocaleTimeString();
+      }
+    }
 
-            try {
-                // 1. Health
-                const res = await fetch(baseUrl + '/api/health');
-                const data = await res.json();
-                setBadge(apiBadge, data.status === 'ok' ? 'ok' : 'error', data.status === 'ok' ? 'Connected' : 'Error');
-                setBadge(dbBadge, data.db === 'ok' ? 'ok' : 'error', data.db === 'ok' ? 'Connected' : 'Error');
+    async function main() {
+      await initPage({ auth: "any" });
+      qs("#refresh-health").addEventListener("click", () => {
+        toast.info("Re-checking backend health…");
+        checkHealth();
+      });
+      checkHealth();
+      setInterval(checkHealth, 30000);
+    }
 
-                // 2. Movies
-                try {
-                    const mRes = await fetch(baseUrl + '/api/movies?limit=50');
-                    const mData = await mRes.json();
-                    const count = mData?.data?.length ?? 0;
-                    moviesSub.textContent = count + ' films loaded from DB';
-                    setBadge(moviesBadge, 'ok', count + ' Movies');
-                } catch {
-                    moviesSub.textContent = 'Could not load movies';
-                    setBadge(moviesBadge, 'error', 'Error');
-                }
-
-                // 3. Showtimes
-                try {
-                    const sRes = await fetch(baseUrl + '/api/showtimes');
-                    const sData = await sRes.json();
-                    const sCount = sData?.data?.length ?? 0;
-                    showsSub.textContent = sCount + ' upcoming shows scheduled';
-                    setBadge(showsBadge, 'ok', sCount + ' Shows');
-                } catch {
-                    showsSub.textContent = 'Could not load showtimes';
-                    setBadge(showsBadge, 'error', 'Error');
-                }
-
-            } catch (err) {
-                setBadge(apiBadge, 'error', 'Offline');
-                setBadge(dbBadge, 'error', 'Offline');
-                setBadge(moviesBadge, 'error', 'Offline');
-                setBadge(showsBadge, 'error', 'Offline');
-                moviesSub.textContent = 'Backend is not running';
-                showsSub.textContent = 'Backend is not running';
-                helpBox.style.display = 'block';
-            }
-
-            const now = new Date();
-            timestamp.textContent = 'Last checked: ' + now.toLocaleTimeString();
-            refreshBtn.classList.remove('is-loading');
-        }
-
-        checkConnections();
-    </script>
+    main();
+  </script>
 </body>
-
 </html>

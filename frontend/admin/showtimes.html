@@ -3,55 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin · Showtimes · CineLux</title>
-  <meta name="robots" content="noindex">
+  <title>Admin · Showtime Management · CineLux</title>
+  <meta name="description" content="CineLux admin — schedule screenings and manage ticket prices.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/animations.css">
   <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body class="admin-body">
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <aside class="admin-sidebar" id="admin-sidebar"></aside>
-  <div class="admin-overlay" data-admin-overlay hidden></div>
-
-  <div class="admin-main">
-    <header id="admin-header"></header>
-    <main id="main" class="admin-content">
-      <div class="admin-toolbar admin-toolbar--wrap">
-        <div class="admin-filters">
-          <label class="sr-only" for="filter-movie">Filter by movie</label>
-          <select class="form-select form-select--compact" id="filter-movie">
-            <option value="">All movies</option>
-          </select>
-          <label class="sr-only" for="filter-screen">Filter by screen</label>
-          <select class="form-select form-select--compact" id="filter-screen">
-            <option value="">All screens</option>
-          </select>
-          <label class="sr-only" for="filter-from">From date</label>
-          <input type="date" class="form-input form-input--compact" id="filter-from" aria-label="From date">
-          <label class="sr-only" for="filter-to">To date</label>
-          <input type="date" class="form-input form-input--compact" id="filter-to" aria-label="To date">
-          <button type="button" class="btn btn--ghost btn--sm" id="filter-reset">Reset</button>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+    <div class="admin-main">
+      <header id="admin-header"></header>
+      <main class="admin-content page-enter">
+        <div class="admin-toolbar">
+          <div class="admin-toolbar__filters">
+            <select class="form-select" id="filter-movie" aria-label="Filter by movie">
+              <option value="">All movies</option>
+            </select>
+            <select class="form-select" id="filter-screen" aria-label="Filter by screen">
+              <option value="">All screens</option>
+            </select>
+            <div class="admin-toolbar__date">
+              <input type="date" class="form-input" id="filter-from" aria-label="From date">
+              <span class="text-3" aria-hidden="true">→</span>
+              <input type="date" class="form-input" id="filter-to" aria-label="To date">
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm" id="clear-filters">Clear</button>
+          </div>
+          <button type="button" class="btn btn--primary" id="add-showtime">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Schedule Showtime
+          </button>
         </div>
-        <button type="button" class="btn btn--primary" id="add-showtime-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          Schedule showtime
-        </button>
-      </div>
 
-      <section class="admin-panel">
-        <div id="showtimes-table-wrap"></div>
+        <div class="table-wrap" id="showtimes-table-wrap" aria-busy="true"></div>
         <div id="showtimes-pagination"></div>
-      </section>
-    </main>
+      </main>
+    </div>
   </div>
 
   <script type="module" src="../js/admin/showtimes.js"></script>

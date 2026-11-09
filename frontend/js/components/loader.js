@@ -1,5 +1,6 @@
 /**
- * Loading states: shimmer skeletons, inline spinners, button busy state.
+ * Loading states: shimmer skeletons, inline spinners, button busy state,
+ * empty/error blocks — tuned for the CineLux dark design system.
  */
 
 /** Wrap a section while it loads: skeleton blocks matching the final layout. */
@@ -25,6 +26,14 @@ export function skeletonHTML(kind = "cards", count = 4) {
     return `<div class="skeleton-seatmap" aria-hidden="true">
       ${Array.from({ length: 6 }, () => `<div class="skeleton-seat-row">${Array.from({ length: 12 }, () => '<div class="skeleton skeleton--seat"></div>').join("")}</div>`).join("")}
     </div>`;
+  }
+  if (kind === "stats") {
+    return `<div class="stat-grid">${Array.from({ length: count }, () => `
+      <div class="stat-card" aria-hidden="true">
+        <div class="skeleton" style="width:44px;height:44px;border-radius:13px"></div>
+        <div class="skeleton skeleton--line w-45"></div>
+        <div class="skeleton skeleton--line w-30" style="height:26px"></div>
+      </div>`).join("")}</div>`;
   }
   return `<div class="skeleton skeleton--block" aria-hidden="true" style="height:180px"></div>`;
 }
@@ -70,6 +79,27 @@ export function emptyStateHTML({ icon = "film", title = "Nothing here yet", mess
       <h3 class="empty-state__title">${title}</h3>
       ${message ? `<p class="empty-state__text">${message}</p>` : ""}
       ${actionLabel && actionHref ? `<a class="btn btn--primary" href="${actionHref}">${actionLabel}</a>` : ""}
+    </div>`;
+}
+
+/** Payment processing / success blocks (checkout flow). */
+export function paymentProcessingHTML({ title = "Processing demo payment…", text = "Simulating the payment provider. No real money moves." } = {}) {
+  return `
+    <div class="pay-processing" role="status" aria-live="polite">
+      <div class="pay-processing__spinner" aria-hidden="true"></div>
+      <h4 class="pay-processing__title">${title}</h4>
+      <p class="pay-processing__text">${text}</p>
+    </div>`;
+}
+
+export function paymentSuccessHTML({ title = "Payment confirmed", text = "" } = {}) {
+  return `
+    <div class="pay-success" role="status">
+      <div class="pay-success-icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5 5L20 6.5"/></svg>
+      </div>
+      <h3 class="pay-success__title">${title}</h3>
+      ${text ? `<p class="pay-success__text">${text}</p>` : ""}
     </div>`;
 }
 

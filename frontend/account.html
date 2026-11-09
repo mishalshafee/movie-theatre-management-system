@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account · CineLux</title>
-  <meta name="description" content="Your CineLux account details.">
+  <meta name="description" content="Your CineLux account details and session information.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/auth.css">
@@ -20,16 +21,34 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div id="site-header"></div>
 
-  <main id="main" class="page">
-    <header class="page-head">
-      <div class="container">
-        <p class="section-eyebrow" data-reveal>Your profile</p>
-        <h1 class="page-title" data-reveal data-reveal-delay="60">Account</h1>
-        <p class="page-subtitle" data-reveal data-reveal-delay="120">Details and shortcuts for your CineLux membership.</p>
-      </div>
-    </header>
+  <main id="main" class="page-enter">
+    <div class="container container--wide" style="padding-top: 1.8rem;">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+        <span aria-current="page">My Account</span>
+      </nav>
+      <header class="page-hero" style="padding-bottom: 0.4rem">
+        <p class="section-eyebrow">Your membership</p>
+        <h1 class="page-hero__title">My Account</h1>
+        <p class="page-hero__sub">Profile details come from your live session (GET /api/auth/me). Profile editing is not provided by the backend, so this view is read-only.</p>
+      </header>
 
-    <div class="container container--narrow account-layout" id="account-body"></div>
+      <section class="section" style="padding-top: 1.6rem;">
+        <div class="account-layout" id="account-host">
+          <div class="card profile-card card--pad">
+            <div class="skeleton" style="width:74px;height:74px;border-radius:28px"></div>
+            <div class="skeleton skeleton--line w-45" style="height:22px"></div>
+            <div class="skeleton skeleton--line w-70"></div>
+            <div class="skeleton skeleton--line w-70"></div>
+          </div>
+          <div style="display:grid;gap:1.5rem">
+            <div class="skeleton skeleton--block" style="height:140px"></div>
+            <div class="skeleton skeleton--block" style="height:180px"></div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <div id="site-footer"></div>

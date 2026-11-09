@@ -1,6 +1,7 @@
 /**
- * Customer homepage: hero (featured movie), Now Showing + Coming Soon grids,
- * experience section, promo CTA. All data comes from the live API.
+ * Customer homepage.
+ * Cinematic hero (featured now-showing movie with artwork), Now Showing +
+ * Coming Soon grids, experience band, promo CTA — all live from the API.
  */
 
 import { initPage } from "../core/session.js";
@@ -10,7 +11,7 @@ import { listMovies } from "../services/movies.service.js";
 import { listShowtimes } from "../services/showtimes.service.js";
 import { movieCard, posterElement } from "../components/movie-card.js";
 import { skeletonHTML, errorStateHTML, emptyStateHTML } from "../components/loader.js";
-import { refreshReveal, initRevealOnScroll } from "../components/reveal.js";
+import { initRevealOnScroll, refreshReveal } from "../components/reveal.js";
 import { toast } from "../components/toast.js";
 import { friendlyMessage } from "../core/api.js";
 import { qs, clear } from "../utils/dom.js";
@@ -18,81 +19,116 @@ import { formatDuration, formatRating, formatMovieStatus, truncate } from "../ut
 import { escapeHtml } from "../utils/dom.js";
 import { icons } from "../components/icons.js";
 
+/* ------------------------------------------------------------------ *
+ * Hero
+ * ------------------------------------------------------------------ */
+
 async function loadHero() {
   const host = qs("#hero");
   if (!host) return;
-  host.classList.add("hero--loading");
   try {
     const { data } = await listMovies({ status: "now_showing", page: 1, limit: 12 });
     if (!data.length) {
-      host.innerHTML = heroHTML(null);
+      host.innerHTML = heroEmptyHTML();
       return;
     }
-    // Feature the first movie that has a poster, otherwise the first movie.
+    // Feature the first movie with artwork; otherwise the first movie.
     const featured = data.find((m) => m.posterUrl) || data[0];
     let hasShowtime = false;
     try {
       const st = await listShowtimes({ movieId: featured.id, limit: 1 });
       hasShowtime = st.total > 0;
-    } catch { /* booking button simply stays hidden */ }
+    } catch { /* booking CTA simply stays hidden */ }
     host.innerHTML = heroHTML(featured, hasShowtime);
+
+    // Full-bleed artwork layer + poster frame
+    const artHost = qs("#hero-art");
+    if (artHost) {
+      const img = document.createElement("img");
+      img.src = "images/hero/hero-collage.jpg";
+      img.alt = "Featured Cinema Artwork";
+      artHost.append(img);
+    }
     const posterHost = qs("#hero-poster");
     if (posterHost) posterHost.append(posterElement(featured.posterUrl, featured.title, "hero__poster"));
-    // Re-scan reveal targets: the hero markup was injected after the initial scan.
     initRevealOnScroll();
   } catch (error) {
-    host.innerHTML = `<section class="hero"><div class="container hero__inner">
-      ${errorStateHTML({ title: "The projector is warming up", message: friendlyMessage(error) })}
-    </div></section>`;
-  } finally {
-    host.classList.remove("hero--loading");
+    host.innerHTML = `<section class="hero hero--bare">
+      <div class="hero__art" aria-hidden="true">
+        <img src="images/hero/hero-collage.jpg" alt="Featured Cinema Artwork">
+      </div>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="container container--wide hero__inner">
+        ${errorStateHTML({ title: "The projector is warming up", message: friendlyMessage(error) })}
+      </div>
+    </section>`;
   }
 }
 
-function heroHTML(movie, hasShowtime = false) {
-  if (!movie) {
-    return `<section class="hero"><div class="container hero__inner">
-      ${emptyStateHTML({
-        title: "No movies are showing yet",
-        message: "The cinema catalogue is empty right now. Sign in as an administrator to add movies.",
-        actionLabel: "Explore movies anyway",
-        actionHref: PAGES.movies,
-      })}
-    </div></section>`;
-  }
+function heroEmptyHTML() {
+  return `<section class="hero hero--bare">
+    <div class="hero__art" aria-hidden="true">
+      <img src="images/hero/hero-collage.jpg" alt="Featured Cinema Artwork">
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="container container--wide">
+    ${emptyStateHTML({
+      icon: "film",
+      title: "No movies are showing yet",
+      message: "The cinema catalogue is empty right now. Sign in as an administrator to add movies and schedule showtimes.",
+      actionLabel: "Explore movies anyway",
+      actionHref: PAGES.movies,
+    })}
+  </div></section>`;
+}
 
+function heroHTML(movie, hasShowtime = false) {
   const meta = [
     movie.genre ? `<span class="hero__chip">${escapeHtml(movie.genre)}</span>` : "",
     `<span class="hero__chip">${icons.clock({ size: 13 })} ${formatDuration(movie.durationMinutes)}</span>`,
-    movie.rating ? `<span class="hero__chip">${icons.star({ size: 13 })} ${formatRating(movie.rating)}</span>` : "",
     `<span class="hero__chip hero__chip--status">${formatMovieStatus(movie.status)}</span>`,
   ].join("");
 
   return `
-    <section class="hero">
+    <section class="hero" aria-label="Featured movie: ${escapeHtml(movie.title)}">
+      <div class="hero__art" id="hero-art" aria-hidden="true"></div>
+      <div class="hero__scrim" aria-hidden="true"></div>
       <div class="hero__glow" aria-hidden="true"></div>
-      <div class="container hero__inner">
+      <div class="container container--wide hero__inner">
         <div class="hero__content">
-          <span class="hero__eyebrow" data-reveal>${icons.sparkles({ size: 15 })} Featured today</span>
-          <h1 class="hero__title" data-reveal data-reveal-delay="60">${escapeHtml(movie.title)}</h1>
-          <div class="hero__meta" data-reveal data-reveal-delay="120">${meta}</div>
-          <p class="hero__desc" data-reveal data-reveal-delay="180">${truncate(movie.description || "An unforgettable story awaits on the big screen.", 220)}</p>
-          <div class="hero__actions" data-reveal data-reveal-delay="240">
+          <span class="hero__eyebrow" data-reveal>${icons.sparkles({ size: 14 })} Featured today</span>
+          <h1 class="hero__title" data-reveal data-reveal-delay="70">${escapeHtml(movie.title)}</h1>
+          <div class="hero__meta" data-reveal data-reveal-delay="140">${meta}</div>
+          <p class="hero__desc" data-reveal data-reveal-delay="210">${escapeHtml(truncate(movie.description || "An unforgettable story awaits on the big screen.", 230))}</p>
+          <div class="hero__actions" data-reveal data-reveal-delay="280">
             <a class="btn btn--primary btn--lg" href="${resolveUrl(`${PAGES.movieDetails}?id=${encodeURIComponent(movie.id)}`)}">
-              ${hasShowtime ? "Book Tickets" : "View Details"}
+              ${hasShowtime ? `${icons.ticket({ size: 17 })} Book Tickets` : "View Details"}
             </a>
-            <a class="btn btn--outline btn--lg" href="${resolveUrl(PAGES.movies)}">Explore Movies</a>
+            <a class="btn btn--outline-light btn--lg" href="${resolveUrl(PAGES.movies)}">Explore Movies</a>
           </div>
         </div>
-        <div class="hero__media" data-reveal data-reveal-delay="140">
+        <div class="hero__media" data-reveal data-reveal-delay="180">
           <div class="hero__poster-frame">
             <div id="hero-poster" class="hero__poster"></div>
             <div class="hero__poster-shine" aria-hidden="true"></div>
           </div>
+          ${movie.rating ? `
+          <div class="hero__medal" aria-hidden="true">
+            <strong>${formatRating(movie.rating)}</strong>
+            <span>${icons.star({ size: 11 })} Rating</span>
+          </div>` : ""}
         </div>
+      </div>
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <span class="hero__scroll-line"></span>
       </div>
     </section>`;
 }
+
+/* ------------------------------------------------------------------ *
+ * Movie sections
+ * ------------------------------------------------------------------ */
 
 async function loadMovieSection({ hostId, status, title }) {
   const section = qs(hostId);
@@ -114,7 +150,11 @@ async function loadMovieSection({ hostId, status, title }) {
       });
       return;
     }
-    data.forEach((movie, index) => grid.append(movieCard(movie, { delay: Math.min(index * 60, 480) })));
+    data.forEach((movie, index) => grid.append(movieCard(movie, {
+      delay: Math.min(index * 60, 420),
+      showStatus: false, // the section heading already communicates status
+      bookable: status === "now_showing",
+    })));
     const countEl = section.querySelector("[data-section-count]");
     if (countEl) countEl.textContent = total > 12 ? `12 of ${total} films` : `${total} film${total === 1 ? "" : "s"}`;
     refreshReveal(grid);
@@ -124,6 +164,10 @@ async function loadMovieSection({ hostId, status, title }) {
     grid.querySelector(".js-retry")?.addEventListener("click", () => loadMovieSection({ hostId, status, title }));
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Boot
+ * ------------------------------------------------------------------ */
 
 function initDeniedBanner(user) {
   const params = new URLSearchParams(location.search);

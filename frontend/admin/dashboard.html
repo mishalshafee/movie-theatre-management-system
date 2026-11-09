@@ -4,49 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin · Dashboard · CineLux</title>
-  <meta name="robots" content="noindex">
+  <meta name="description" content="CineLux admin dashboard — live cinema statistics from the backend.">
+  <meta name="theme-color" content="#0B1020">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/animations.css">
   <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body class="admin-body">
-  <a class="skip-link" href="#main">Skip to content</a>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="admin-sidebar"></aside>
+    <div class="admin-main">
+      <header id="admin-header"></header>
+      <main class="admin-content page-enter" id="dashboard-content">
+        <div class="stat-grid" id="stats-grid"></div>
 
-  <aside class="admin-sidebar" id="admin-sidebar"></aside>
-  <div class="admin-overlay" data-admin-overlay hidden></div>
+        <section class="card card--pad" data-reveal>
+          <div class="card__head" style="padding:0 0 0.9rem;border-bottom:1px solid var(--line);margin-bottom:1.15rem">
+            <h2 class="card__title">Catalogue status</h2>
+            <span class="meta-chip meta-chip--plain">from GET /api/movies</span>
+          </div>
+          <div class="dist-bars" id="dist-bars"></div>
+        </section>
 
-  <div class="admin-main">
-    <header id="admin-header"></header>
-    <main id="main" class="admin-content">
-      <section class="stat-grid" id="stats-grid" aria-label="Catalogue statistics"></section>
-
-      <section class="admin-panel" data-reveal>
-        <header class="admin-panel__head">
-          <h2>Upcoming showtimes</h2>
-          <p class="admin-panel__hint">The next five scheduled screenings (server time ordering).</p>
-        </header>
-        <div id="upcoming-panel"></div>
-      </section>
-
-      <section class="admin-panel admin-panel--muted" data-reveal>
-        <header class="admin-panel__head">
-          <h2>About these numbers</h2>
-        </header>
-        <p class="admin-panel__note">
-          Statistics are computed live from the API catalogue endpoints
-          (movies by status, screens, upcoming showtimes). Revenue, customer
-          and sales analytics are intentionally absent — the backend does not
-          provide aggregate reporting endpoints.
-        </p>
-      </section>
-    </main>
+        <section class="card card--pad" data-reveal>
+          <div class="card__head" style="padding:0 0 0.9rem;border-bottom:1px solid var(--line);margin-bottom:1.15rem">
+            <h2 class="card__title">Next screenings</h2>
+            <a class="link-button" href="showtimes.html">Manage showtimes →</a>
+          </div>
+          <div class="next-list" id="next-list"></div>
+          <p class="field-hint" style="margin-top:0.9rem">Revenue, transactions and customer analytics are not exposed by the backend, so they are intentionally not shown.</p>
+        </section>
+      </main>
+    </div>
   </div>
 
   <script type="module" src="../js/admin/dashboard.js"></script>

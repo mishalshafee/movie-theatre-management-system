@@ -1,0 +1,429 @@
+/* ==========================================================================
+   CineLux — Digital ticket (booking-details page).
+   Perforated two-part ticket with stub, print-ready (see print.css).
+   ========================================================================== */
+
+.ticket-page {
+  display: grid;
+  gap: 1.6rem;
+  justify-items: center;
+  margin-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+#ticket-banner {
+  width: 100%;
+  display: grid;
+  gap: 1.2rem;
+}
+
+#ticket-banner .pay-success {
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: var(--radius-lg);
+  background: var(--success-soft);
+}
+
+/* ---- The ticket ------------------------------------------------------------------ */
+.ticket {
+  position: relative;
+  width: min(100%, 780px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(200px, 0.85fr);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(150deg, #1D2A44, #172238 60%);
+  border: 1px solid var(--accent-line);
+  box-shadow: var(--shadow-lg), 0 30px 70px -30px rgba(214, 179, 106, 0.28);
+  overflow: hidden;
+}
+
+.ticket__main {
+  display: grid;
+  gap: 1.35rem;
+  padding: 1.7rem 1.8rem 1.6rem;
+  min-width: 0;
+}
+
+.ticket__brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---- Movie block ------------------------------------------------------------------ */
+.ticket__movie {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.ticket__poster-frame {
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-3);
+  box-shadow: var(--shadow-md);
+}
+
+.ticket__poster-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ticket__title {
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  line-height: 1.2;
+}
+
+.ticket__when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.ticket__info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+}
+
+.ticket__info-row {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: rgba(11, 16, 32, 0.45);
+  border: 1px solid var(--line);
+}
+
+.ticket__info-row dt {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ticket__info-row dd {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.ticket__payment-note {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.8rem 0.95rem;
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--text-gold);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.ticket__payment-note .icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ---- Perforated divider + stub -------------------------------------------------------- */
+.ticket__perf {
+  position: relative;
+  width: 2px;
+  background-image: linear-gradient(180deg, var(--line-strong) 55%, transparent 45%);
+  background-size: 2px 12px;
+  background-repeat: repeat-y;
+  margin-block: 14px;
+}
+
+/* punched notches top & bottom */
+.ticket__perf::before,
+.ticket__perf::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.ticket__perf::before { top: -25px; }
+.ticket__perf::after { bottom: -25px; }
+
+.ticket__stub {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 1.1rem;
+  padding: 1.7rem 1.5rem;
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(214, 179, 106, 0.13), transparent 60%),
+    rgba(11, 16, 32, 0.35);
+  text-align: center;
+}
+
+.ticket__stub-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* decorative QR-style block (explicitly NOT a scannable token) */
+.qr-deco {
+  --qr-n: 9;
+  width: 122px;
+  height: 122px;
+  margin-inline: auto;
+  padding: 9px;
+  border-radius: 10px;
+  background: #F5F7FB;
+  display: grid;
+  grid-template-columns: repeat(var(--qr-n), 1fr);
+  grid-template-rows: repeat(var(--qr-n), 1fr);
+  gap: 2px;
+  box-shadow: var(--shadow-md);
+}
+
+.qr-deco i {
+  background: transparent;
+  border-radius: 1px;
+}
+
+.qr-deco i.f {
+  background: #16233B;
+}
+
+/* corner finder squares */
+.qr-deco .finder {
+  position: relative;
+  background: #16233B;
+  border-radius: 3px;
+}
+
+.qr-deco .finder::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  background: #F5F7FB;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 22% #16233B;
+}
+
+.qr-deco__caption {
+  margin-top: 0.55rem;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: center;
+}
+
+.ticket__code {
+  font-family: var(--font-mono);
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text-gold);
+  text-shadow: 0 0 22px rgba(214, 179, 106, 0.35);
+}
+
+.ticket__code-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ticket__total {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.ticket__total span {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ticket__total strong {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  color: var(--text-gold);
+  line-height: 1;
+}
+
+.ticket__print-note {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ---- Ticket action bar ------------------------------------------------------------------ */
+.ticket-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* ---- Held booking pay strip ---------------------------------------------------------------- */
+.ticket-pay {
+  width: min(100%, 780px);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  padding: 1.4rem 1.6rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--accent-line);
+  background: var(--grad-surface);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.ticket-pay__title {
+  font-size: var(--fs-lg);
+}
+
+.ticket-pay__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+/* ---- Status banner above ticket ------------------------------------------------------------ */
+.ticket-status-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+/* ---- My bookings list cards ------------------------------------------------------------------ */
+.bookings-list {
+  display: grid;
+  gap: 1.1rem;
+  margin-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+.booking-card {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1.35fr) minmax(0, 1fr) auto;
+  gap: 1.15rem;
+  align-items: center;
+  padding: 1.15rem 1.3rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease);
+}
+
+.booking-card:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.booking-card__poster {
+  width: 84px;
+  aspect-ratio: 2 / 3;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-3);
+}
+
+.booking-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.booking-card__main {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.booking-card__title {
+  font-size: 1.18rem;
+  line-height: 1.25;
+}
+
+.booking-card__title a {
+  color: var(--text);
+}
+
+.booking-card__title a:hover {
+  color: var(--accent-strong);
+}
+
+.booking-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.booking-card__seats {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.booking-card__facts {
+  display: grid;
+  gap: 0.35rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.booking-card__facts-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.booking-card__facts-row .icon {
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.booking-card__total {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--text-gold);
+}
+
+.booking-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+/* filter tabs on my bookings */
+.bookings-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
